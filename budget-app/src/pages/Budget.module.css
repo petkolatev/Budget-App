@@ -1,0 +1,67 @@
+.OverallSpending {
+    max-width:60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .input-date {
+    max-width: 640px;
+    background-color: #eee;
+    padding: 7px;
+    position: relative;
+  }
+  
+  .headline {
+    background-color: #eee;
+    text-align: center;
+    padding-bottom: 6px;
+  }
+  
+  .divider {
+    border-top: dotted thin;
+    clear: both;
+    height: 1px;
+    margin: 7px;
+  }
+  
+  .dataPicket {
+    max-width: 550px;
+    background-color: #eee;
+    height: 80px;
+    padding: 10px 0 10px 0;
+  }
+  
+  .dataPicket label {
+    float: left;
+    padding: 0 5px 0 5px;
+    background-color: #bbb;
+    width: 85px;
+    margin: 2px 10px 0 10px;
+    height: 20px;
+    font-weight: bold;
+  }
+  
+  .dataPicket button {
+    float:right;
+    margin: 35px 10px 10px 10px;
+  }
+  
+  .summary {
+    float: left;
+  }
+  
+  .summary span:first-child {
+    margin-left: 0;
+  }
+  
+  .summary span {
+    margin-left: 50px;
+  }
+  
+  .tableTitle {
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    color: #003781;
+    margin: 10px;
+  }
