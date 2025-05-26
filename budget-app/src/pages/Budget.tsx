@@ -1,7 +1,16 @@
+import { useFilePicker } from 'use-file-picker';
 import styles from './Budget.module.css'
 
 
+
 export function Budget() {
+    const [openFileSelector, { filesContent, loading }] = useFilePicker({
+        readAs: "Text",
+        accept: [".txt"]
+    });
+    console.log(filesContent[0].content);
+
+
     return (
         <div>
             <div className={styles.headline}>
@@ -12,7 +21,7 @@ export function Budget() {
             <div className={styles.divider}></div>
             <div className={styles.dataPicket}>
                 <button > Покажи </button>
-                <button > Избери Файл </button>
+                <button onClick={() => openFileSelector()}> Избери Файл </button>
             </div>
         </div>
     )
