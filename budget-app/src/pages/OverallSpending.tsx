@@ -9,10 +9,10 @@ export interface OverallSpending {
   received: number | undefined
 }
 
-export function OverallSpending(props: Readonly<OverallSpending>) {
-  const transactions = props.transactions
-  const spend = props.spend
-  const received = props.received
+export function OverallSpending(state: Readonly<OverallSpending>) {
+  const transactions = state.transactions
+  const spend = state.spend
+  const received = state.received
   const pieChartData = transactions && Categories.map((category, index) => {
     const categoryTransactions = getCategoryTransactions(category[0], transactions)
     const categorySpend = getCategoryAmount(categoryTransactions, 'debit')
@@ -40,8 +40,8 @@ export function OverallSpending(props: Readonly<OverallSpending>) {
           radius={22}
           labelPosition={112}
         />
-      <table>
-        <thead>
+      <table className={styles.table}>
+        <thead className={styles.thead}>
           <tr>
             <th>Категория</th>
             <th>Изхарчени</th>
@@ -49,7 +49,7 @@ export function OverallSpending(props: Readonly<OverallSpending>) {
             <th>Процент Разходи</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={styles.tbody}>
           {transactions && Categories.map((category, index) => {
           const categoryTransactions = getCategoryTransactions(category[0], transactions)
           const categorySpend = getCategoryAmount(categoryTransactions, 'debit')

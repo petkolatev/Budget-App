@@ -1,9 +1,10 @@
 import { useFilePicker } from 'use-file-picker';
 import styles from './Budget.module.css'
-import { parse } from './BudgetParser';
+import { parse, Categories, getCategoryTransactions, getCategoryAmount } from './BudgetParser';
 import { useEffect, useState } from 'react';
-import { Transaction } from './budgetSlice';
+import { selectSpend, Transaction } from './budgetSlice';
 import { OverallSpending } from './OverallSpending';
+import { TransactionTable } from './TransactionTable';
 
 export function Budget() {
     const [state, setState] = useState<Transaction[]>([])
@@ -12,11 +13,15 @@ export function Budget() {
         accept: [".txt"]
     });
 
+    const spend = selectSpend(state)
+
 
     useEffect(() => {
         if (filesContent[0]?.content) {
 
             const budget = parse(filesContent[0].content);
+            budget.map((el) => console.log(el.type)
+            )
 
             setState(budget)
         }
@@ -36,12 +41,24 @@ export function Budget() {
                 <button > Покажи </button>
                 <button onClick={() => openFileSelector()}> Избери Файл </button>
             </div>
-            {state && <OverallSpending
+            {state.length !== 0 && <OverallSpending
                 transactions={state}
                 spend={0}
                 received={0}
             />
             }
+            {state.length !== 0 && Categories.map((category, index) => {
+                const categoryTransactions = getCategoryTransactions(category[0], state)
+                const categorySpend = getCategoryAmount(categoryTransactions, 'debit')
+                return <TransactionTable
+                    key={index}
+                    title={category[0]}
+                    transactions={categoryTransactions}
+                    spend={categorySpend}
+                    received={getCategoryAmount(categoryTransactions, 'credit')}
+                    percentage={Math.round((categorySpend / spend!) * 100)}
+                />
+            })}
         </div>
     )
 }
