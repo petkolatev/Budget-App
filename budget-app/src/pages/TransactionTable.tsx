@@ -16,9 +16,6 @@ export function TransactionTable(props: TransactionTableProps) {
   const percentage = props.percentage
   const title = props.title
 
-  console.log(title);
-  
-
   return (
     <div>
       <div className={styles.tableTitle} > {title} </div>

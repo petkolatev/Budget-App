@@ -15,7 +15,7 @@ export function Budget() {
 
     const spend = selectSpend(state)
     const received = selectReceived(state)
-    console.log(spend);
+    
     
 
 
@@ -23,9 +23,6 @@ export function Budget() {
         if (filesContent[0]?.content) {
 
             const budget = parse(filesContent[0].content);
-            budget.map((el) => console.log(el.type)
-            )
-
             setState(budget)
         }
 
