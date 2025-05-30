@@ -21,18 +21,8 @@ const initialState = {
   transactions: [],
 };
 
-
-export const reducer = (state: any, action: { type: any; payload: string; }) => {
-  switch (action.type) {
-    case "PROCESS_FILE":
-      return { ...state, transactions: parse(action.payload) };
-    default:
-      return state;
-  }
-};
-
-export const selectSpend = (state: any) => state.reduce((prev: any, curr: { type: string; amount: any; }) =>
+export const selectSpend = (state: Transaction[]) => state.reduce((prev: number, curr: { type: string; amount: number; }) =>
   prev + (curr.type === 'debit' ? curr.amount : 0), 0)
 
-export const selectReceived = (state: any) => state.reduce((prev: any, curr: { type: string; amount: any; }) =>
+export const selectReceived = (state: Transaction[]) => state.reduce((prev: number, curr: { type: string; amount: number; }) =>
   prev + (curr.type === 'credit' ? curr.amount : 0), 0)

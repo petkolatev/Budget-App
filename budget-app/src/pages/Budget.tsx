@@ -64,7 +64,3 @@ export function Budget() {
 }
 
 export default Budget
-
-function processFile(content: string): any {
-    throw new Error('Function not implemented.');
-}
