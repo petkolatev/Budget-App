@@ -2,7 +2,7 @@ import { useFilePicker } from 'use-file-picker';
 import styles from './Budget.module.css'
 import { parse, Categories, getCategoryTransactions, getCategoryAmount } from './BudgetParser';
 import { useEffect, useState } from 'react';
-import { selectSpend, Transaction } from './budgetSlice';
+import { selectReceived, selectSpend, Transaction } from './budgetSlice';
 import { OverallSpending } from './OverallSpending';
 import { TransactionTable } from './TransactionTable';
 
@@ -14,6 +14,9 @@ export function Budget() {
     });
 
     const spend = selectSpend(state)
+    const received = selectReceived(state)
+    console.log(spend);
+    
 
 
     useEffect(() => {
@@ -43,8 +46,8 @@ export function Budget() {
             </div>
             {state.length !== 0 && <OverallSpending
                 transactions={state}
-                spend={0}
-                received={0}
+                spend={spend}
+                received={received}
             />
             }
             {state.length !== 0 && Categories.map((category, index) => {

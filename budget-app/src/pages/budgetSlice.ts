@@ -31,5 +31,8 @@ export const reducer = (state: any, action: { type: any; payload: string; }) => 
   }
 };
 
-export const selectSpend = (state: any) => state.transactions?.reduce((prev: any, curr: { type: string; amount: any; }) =>
+export const selectSpend = (state: any) => state.reduce((prev: any, curr: { type: string; amount: any; }) =>
   prev + (curr.type === 'debit' ? curr.amount : 0), 0)
+
+export const selectReceived = (state: any) => state.reduce((prev: any, curr: { type: string; amount: any; }) =>
+  prev + (curr.type === 'credit' ? curr.amount : 0), 0)
