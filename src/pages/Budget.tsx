@@ -9,7 +9,7 @@ import { Transaction } from '@/types/types';
 
 export function Budget() {
     const [state, setState] = useState<Transaction[]>([])
-    const [openFileSelector, { filesContent, loading }] = useFilePicker({
+    const [openFileSelector, { filesContent }] = useFilePicker({
         readAs: "Text",
         accept: [".txt"]
     });
@@ -17,9 +17,6 @@ export function Budget() {
     const spend = selectSpend(state)
     const received = selectReceived(state)
     
-    
-
-
     useEffect(() => {
         if (filesContent[0]?.content) {
 
