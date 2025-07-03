@@ -1,13 +1,7 @@
-import { Transaction } from './budgetSlice';
-import styles from './Budget.module.css';
+import { TransactionTableProps } from '@/types/types';
+import styles from '../styles/Budget.module.css'
 
-export interface TransactionTableProps {
-  transactions: Transaction[]
-  spend: number
-  received: number
-  percentage: number
-  title: string
-}
+
 
 export function TransactionTable(props: TransactionTableProps) {
   const transactions = props.transactions

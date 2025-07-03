@@ -1,19 +1,15 @@
-import { Transaction } from './budgetSlice';
-import styles from './Budget.module.css';
+import styles from '../styles/Budget.module.css'
 import { Categories, getCategoryAmount, getCategoryTransactions } from './BudgetParser';
 import { PieChart } from 'react-minimal-pie-chart';
+import { OverallSpendingType } from '@/types/types';
 
-export interface OverallSpending {
-  transactions: Transaction[] | undefined
-  spend: number | undefined
-  received: number | undefined
-}
 
-export function OverallSpending(state: Readonly<OverallSpending>) {
+
+export function OverallSpending(state: Readonly<OverallSpendingType>) {
   const transactions = state.transactions
   const spend = state.spend
   const received = state.received
-  const pieChartData = transactions && Categories.map((category, index) => {
+  const pieChartData = transactions && Categories.map((category) => {
     const categoryTransactions = getCategoryTransactions(category[0], transactions)
     const categorySpend = getCategoryAmount(categoryTransactions, 'debit')
     return { 
@@ -33,7 +29,7 @@ export function OverallSpending(state: Readonly<OverallSpending>) {
       <PieChart
           data={pieChartData ?? [] }
           label={({ dataEntry }) => dataEntry.title}
-          labelStyle={(index) => ({
+          labelStyle={() => ({
             fontSize: '3px',
             fontFamily: 'sans-serif',
           })}

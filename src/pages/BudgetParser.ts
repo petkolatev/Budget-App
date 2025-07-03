@@ -1,4 +1,4 @@
-import { Transaction } from './budgetSlice'
+import { Transaction } from "@/types/types"
 
 const LINE_START_DEFAULT = 1
 

@@ -1,10 +1,11 @@
 import { useFilePicker } from 'use-file-picker';
-import styles from './Budget.module.css'
+import styles from '../styles/Budget.module.css'
 import { parse, Categories, getCategoryTransactions, getCategoryAmount } from './BudgetParser';
 import { useEffect, useState } from 'react';
-import { selectReceived, selectSpend, Transaction } from './budgetSlice';
+import { selectReceived, selectSpend } from './budgetSlice';
 import { OverallSpending } from './OverallSpending';
 import { TransactionTable } from './TransactionTable';
+import { Transaction } from '@/types/types';
 
 export function Budget() {
     const [state, setState] = useState<Transaction[]>([])
