@@ -22,6 +22,8 @@ Then
  Start the application
  # npm run build 
  Builds the production version
+ # npm run lint
+ To detect errors, warnings, and style rule inconsistencies — even before the code is executed.
 
 
 
