@@ -1,10 +1,10 @@
 import { useFilePicker } from 'use-file-picker';
 import styles from '../styles/Budget.module.css'
-import { parse, Categories, getCategoryTransactions, getCategoryAmount } from './BudgetParser';
+import { parse, Categories, getCategoryTransactions, getCategoryAmount } from '../lib/BudgetParser';
 import { useEffect, useState } from 'react';
-import { selectReceived, selectSpend } from './budgetSlice';
-import { OverallSpending } from './OverallSpending';
-import { TransactionTable } from './TransactionTable';
+import { selectReceived, selectSpend } from '../lib/budgetSlice';
+import { OverallSpending } from '../components/OverallSpending';
+import { TransactionTable } from '../components/TransactionTable';
 import { Transaction } from '@/types/types';
 
 export function Budget() {
@@ -16,7 +16,7 @@ export function Budget() {
 
     const spend = selectSpend(state)
     const received = selectReceived(state)
-    
+
     useEffect(() => {
         if (filesContent[0]?.content) {
 
