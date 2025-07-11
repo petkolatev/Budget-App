@@ -15,10 +15,10 @@ export default function LoginForm() {
         });
         const data = await res.json();
         if (res.ok) {
-            setMsg('✅ Успешен вход');
+            setMsg('Successful login');
             localStorage.setItem('token', data.token);
         } else {
-            setMsg(`❌ ${data.error}`);
+            setMsg(` ${data.error}`);
         }
     };
 
@@ -26,8 +26,8 @@ export default function LoginForm() {
         <div className={styles.login}>
             <h2>Login</h2>
             <form onSubmit={handleLogin}>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Имейл" />
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Парола" />
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                 <button type="submit">Вход</button>
                 {msg && <p>{msg}</p>}
             </form>

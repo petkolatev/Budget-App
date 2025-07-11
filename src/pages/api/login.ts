@@ -13,17 +13,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(401).json({ error: 'Невалиден имейл или парола' });
+    if (!user) return res.status(401).json({ error: 'Wrong email or password' });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ error: 'Невалиден имейл или парола' });
+    if (!isMatch) return res.status(401).json({ error: 'Wrong email or password' });
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
       expiresIn: '1d',
     });
 
-    res.status(200).json({ message: 'Успешен вход', token });
+    res.status(200).json({ message: 'Successful login', token });
   } catch (err) {
-    res.status(500).json({ error: 'Сървърна грешка' });
+    res.status(500).json({ error: 'Server error' });
   }
 }
