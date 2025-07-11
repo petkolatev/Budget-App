@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'GET') {
         const users = await UserModel.find({});
         res.status(200).json(users);
-    } else if (req.method === 'POST') {
+    } else  {
         const user = await UserModel.create({
             username: 'Petko',
             email: 'axf@abv.bg'
