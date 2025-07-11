@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import styles from '../styles/Login.module.css'
+import { useRouter } from 'next/router';
 
 export default function LoginForm() {
+    const router = useRouter()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [msg, setMsg] = useState('');
@@ -17,6 +19,7 @@ export default function LoginForm() {
         if (res.ok) {
             setMsg('Successful login');
             localStorage.setItem('token', data.token);
+            router.push('/')
         } else {
             setMsg(` ${data.error}`);
         }
