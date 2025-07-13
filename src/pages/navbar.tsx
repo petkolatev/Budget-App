@@ -5,7 +5,7 @@ export default function Navbar() {
         <nav className="navbar">
             <Link href='/'>Home</Link>
             <Link href='/login'>Login</Link>
-            <Link href='/createUser'>Create User</Link>
+            <Link href='/createUser'>Registration</Link>
         </nav>
 
     )
