@@ -25,7 +25,11 @@ export default function signUp() {
             router.push('/login')
         } else {
             setMsg(` ${data.error}`);
+            setTimeout(() => {
+                setMsg('')
+            }, 5000)
         }
+
 
     }
     return (
@@ -37,7 +41,7 @@ export default function signUp() {
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                 <input type="password" value={rePassword} onChange={(e) => setRePassword(e.target.value)} placeholder="RePassword" />
                 <button type="submit">Submit</button>
-                {msg && <p>{msg}</p>}
+                {msg && <p className={styles.msg}>{msg}</p>}
             </form>
         </div>
     )
