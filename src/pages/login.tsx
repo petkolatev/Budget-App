@@ -22,6 +22,9 @@ export default function LoginForm() {
             router.push('/')
         } else {
             setMsg(` ${data.error}`);
+            setTimeout(() => {
+                setMsg('')
+            }, 5000)
         }
     };
 
@@ -32,7 +35,7 @@ export default function LoginForm() {
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                 <button type="submit">Login</button>
-                {msg && <p>{msg}</p>}
+                {msg && <p className={styles.msg}>{msg}</p>}
             </form>
         </div>
     );
