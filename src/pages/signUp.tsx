@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/Login.module.css'
 import { useRouter } from 'next/router';
 
@@ -10,7 +10,22 @@ export default function signUp() {
     const [rePassword, setRePassword] = useState('');
     const [msg, setMsg] = useState('');
 
-    const handleCreate = async () => {
+    const handleCreate = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (password !== rePassword) {
+            throw new Error('Password miss match')
+        }
+        const res = await fetch('/api/signUp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password, rePassword }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+            router.push('/login')
+        } else {
+            setMsg(` ${data.error}`);
+        }
 
     }
     return (
