@@ -13,7 +13,7 @@ export default function signUp() {
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault()
         if (password !== rePassword) {
-            throw new Error('Password miss match')
+            throw new Error('Password missmatch')
         }
         const res = await fetch('/api/signUp', {
             method: 'POST',
@@ -25,9 +25,6 @@ export default function signUp() {
             router.push('/login')
         } else {
             setMsg(` ${data.error}`);
-            setTimeout(() => {
-                setMsg('')
-            }, 5000)
         }
 
 

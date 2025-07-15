@@ -13,16 +13,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     await connectDB()
-    const isUserExist = await User.findOne({ email })
-    if (isUserExist) {
-        return res.status(409).json({ error: 'User alredy exist' })
+    const doesUserExists = await User.findOne({ email })
+    if (doesUserExists) {
+        return res.status(409).json({ error: 'User already exist' })
     }
 
     try {
         const salt = 10
         const hashedPassword = await bcrypt.hash(password, salt)
         const newUser = await User.create({ email, name, password: hashedPassword })
-        res.status(201).json({ message: 'User is sign up', user: newUser })
+        res.status(201).json({ user: newUser })
     } catch (error) {
         res.status(500).json({ error: 'Server error' })
     }

@@ -22,9 +22,6 @@ export default function LoginForm() {
             router.push('/')
         } else {
             setMsg(` ${data.error}`);
-            setTimeout(() => {
-                setMsg('')
-            }, 5000)
         }
     };
 
