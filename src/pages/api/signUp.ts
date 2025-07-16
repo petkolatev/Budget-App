@@ -9,13 +9,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     const { name, email, password, rePassword } = req.body
     if (password !== rePassword) {
-        return res.status(400).json({ error: 'Password miss match' })
+        return res.status(400).json({ error: 'Password mismatch' })
     }
 
     await connectDB()
-    const doesUserExists = await User.findOne({ email })
-    if (doesUserExists) {
-        return res.status(409).json({ error: 'User already exist' })
+    const user = await User.findOne({ email })
+    if (user) {
+        return res.status(409).json({ error: 'User already exists' })
     }
 
     try {
@@ -24,6 +24,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const newUser = await User.create({ email, name, password: hashedPassword })
         res.status(201).json({ user: newUser })
     } catch (error) {
-        res.status(500).json({ error: 'Server error' })
+        res.status(500).json({ error: 'Internal server error' })
     }
 }
