@@ -17,7 +17,6 @@ export default function LoginForm() {
         });
         const data = await res.json();
         if (res.ok) {
-            setMsg('Successful login');
             localStorage.setItem('token', data.token);
             router.push('/')
         } else {
