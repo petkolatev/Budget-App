@@ -7,11 +7,11 @@ export default function LoginForm() {
     const router = useRouter()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [msg, setMsg] = useState('');
+    const [error, setError] = useState('');
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        setMsg('')
+        setError('')
         const res = await signIn('credentials', {
             redirect: false,
             email,
@@ -21,7 +21,7 @@ export default function LoginForm() {
         if (res?.ok) {
             router.push('/')
         } else {
-            setMsg('Wrong email or password')
+            setError('Wrong email or password')
         }
     };
 
@@ -32,7 +32,7 @@ export default function LoginForm() {
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                 <button type="submit">Login</button>
-                {msg && <p className={styles.msg}>{msg}</p>}
+                {error && <p className={styles.msg}>{error}</p>}
             </form>
         </div>
     );
