@@ -1,3 +1,4 @@
+import { signIn } from 'next-auth/react'
 import { useState } from 'react';
 import styles from '../styles/Login.module.css'
 import { useRouter } from 'next/router';
@@ -10,17 +11,17 @@ export default function LoginForm() {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        const res = await fetch('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-        });
-        const data = await res.json();
-        if (res.ok) {
-            localStorage.setItem('token', data.token);
+        setMsg('')
+        const res = await signIn('credentials', {
+            redirect: false,
+            email,
+            password,
+        })
+
+        if (res?.ok) {
             router.push('/')
         } else {
-            setMsg(` ${data.error}`);
+            setMsg('Wrong email or password')
         }
     };
 
