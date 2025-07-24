@@ -1,13 +1,14 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import mongoose from 'mongoose'
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
 import bcrypt from 'bcrypt'
 import User from '../../../types/User'
 import connectDB from '@/lib/mongodb'
 
-await connectDB();
+
 
 export default NextAuth({
+    adapter: MongoDBAdapter(connectDB()),
     providers: [
         CredentialsProvider({
             name: 'Credentials',
@@ -23,7 +24,7 @@ export default NextAuth({
 
                 const isValid = await bcrypt.compare(password!, user.password)
                 if (!isValid) return null
-            
+
                 return { id: user._id!.toString(), name: user.name, email: user.email }
 
             },
@@ -32,6 +33,7 @@ export default NextAuth({
 
     session: {
         strategy: 'jwt',
+        maxAge: 1 * 12 * 60 * 60
     },
     pages: {
         signIn: '/login',
