@@ -1,8 +1,9 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
-import { authorizeUser } from '@/lib/auth/authorizeUser'
 import connectDB from '@/lib/mongodb'
+import { compare } from 'bcrypt'
+import User from '@/types/User'
 
 
 
@@ -17,9 +18,11 @@ export default NextAuth({
             },
             async authorize(credentials) {
                 const { email, password } = credentials || {}
+                const user = await User.findOne({ email })
+                if (!user) return null
 
-                return await authorizeUser(email!, password!)
-
+                const isValid = await compare(password!, user.password)
+                return isValid ? { id: user._id!.toString(), name: user.name, email: user.email } : null
             },
         }),
     ],
