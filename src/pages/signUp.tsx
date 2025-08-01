@@ -8,12 +8,12 @@ export default function signUp() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
-    const [msg, setMsg] = useState('');
+    const [error, setError] = useState('');
 
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault()
         if (password !== rePassword) {
-            throw new Error('Password mismatch')
+            return setError('Passwords mismatch')
         }
         const res = await fetch('/api/signUp', {
             method: 'POST',
@@ -24,7 +24,7 @@ export default function signUp() {
         if (res.ok) {
             router.push('/login')
         } else {
-            setMsg(` ${data.error}`);
+            setError(` ${data.error}`);
         }
 
 
@@ -38,7 +38,7 @@ export default function signUp() {
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                 <input type="password" value={rePassword} onChange={(e) => setRePassword(e.target.value)} placeholder="RePassword" />
                 <button type="submit">Submit</button>
-                {msg && <p className={styles.msg}>{msg}</p>}
+                {error && <p className={styles.msg}>{error}</p>}
             </form>
         </div>
     )
