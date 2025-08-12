@@ -1,11 +1,13 @@
 import { useFilePicker } from 'use-file-picker';
 import styles from '../styles/Budget.module.css'
-import { parse, Categories, getCategoryTransactions, getCategoryAmount } from '../lib/BudgetParser';
-import { useEffect, useState } from 'react';
+import { parse, getCategoryTransactions, getCategoryAmount } from '../lib/BudgetParser';
+import { Key, useEffect, useState } from 'react';
 import { selectReceived, selectSpend } from '../lib/budgetSlice';
 import { OverallSpending } from '../components/OverallSpending';
 import { TransactionTable } from '../components/TransactionTable';
 import { Transaction } from '@/types/types';
+
+export let Categories: []
 
 export function Budget() {
     const [state, setState] = useState<Transaction[]>([])
@@ -16,12 +18,24 @@ export function Budget() {
 
     const spend = selectSpend(state)
     const received = selectReceived(state)
+    useEffect(() => {
+        const data = localStorage.getItem('categories') 
+        if(data){
+            Categories = JSON.parse(data)
+        }
+        const saved = localStorage.getItem('state')
+        if (saved) {
+            const parsed = JSON.parse(saved)
+            setState(parsed)
+        }
+    }, [])
+
 
     useEffect(() => {
         if (filesContent[0]?.content) {
-
             const budget = parse(filesContent[0].content);
             setState(budget)
+            localStorage.setItem('state', JSON.stringify(budget))
         }
 
     }, [filesContent])
@@ -45,7 +59,7 @@ export function Budget() {
                 received={received}
             />
             }
-            {state.length !== 0 && Categories.map((category, index) => {
+            {state.length !== 0 && Categories!.map((category: string[], index: Key | null | undefined) => {
                 const categoryTransactions = getCategoryTransactions(category[0], state)
                 const categorySpend = getCategoryAmount(categoryTransactions, 'debit')
                 return <TransactionTable

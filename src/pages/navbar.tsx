@@ -8,6 +8,7 @@ export default function Navbar({ pageProps }: AppProps) {
             <Link href='/'>Home</Link>
             <Link href='/login'>Login</Link>
             <Link href='/signUp'>Sign Up</Link>
+            <Link href='/createCategory'>Category</Link>
         </nav>
 
     )

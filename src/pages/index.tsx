@@ -10,7 +10,9 @@ export default function Home() {
       {session ?
         <div>
           <p>Welcome, {session?.user?.name}</p>
-          <button onClick={() => signOut({ callbackUrl: '/login' })}>
+          <button onClick={() => {
+            localStorage.clear()
+            signOut({ callbackUrl: '/login' })}}>
             Logout
           </button>
           <div className="App">

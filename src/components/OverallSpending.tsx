@@ -1,7 +1,8 @@
 import styles from '../styles/Budget.module.css'
-import { Categories, getCategoryAmount, getCategoryTransactions } from '../lib/BudgetParser';
+import {  getCategoryAmount, getCategoryTransactions } from '../lib/BudgetParser';
 import { PieChart } from 'react-minimal-pie-chart';
 import { OverallSpendingType } from '@/types/types';
+import { Categories } from '@/pages/Budget';
 
 
 

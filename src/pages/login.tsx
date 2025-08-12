@@ -17,6 +17,13 @@ export default function LoginForm() {
             email,
             password,
         })
+        const response = await fetch('/api/getCategories', {
+            method: 'GET'
+        })
+        const data = await response.json()
+        const Categories = data.categories.map((cat: { name: any; merchants: any; }) => [cat.name, ...cat.merchants])
+
+        localStorage.setItem('categories', JSON.stringify(Categories))
 
         if (res?.ok) {
             router.push('/')

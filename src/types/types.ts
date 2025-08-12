@@ -23,16 +23,6 @@ export interface OverallSpendingType {
     received: number | undefined
 }
 
-export interface Transaction {
-    date: string,
-    amount: number,
-    type: 'debit' | 'credit',
-    document: string,
-    contragent: string,
-    reason: string,
-    info: string,
-    category: string
-}
 
 export interface BudgetState {
     value: number;
