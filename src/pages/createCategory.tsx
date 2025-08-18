@@ -3,26 +3,31 @@ import { useState, FormEvent } from 'react';
 
 export default function CreateCategoryPage() {
     const [name, setName] = useState<string>('');
-    const [merchants, setMerchants] = useState<string>('');
+    const [merchantName, setMerchantName] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
     const [message, setMessage] = useState<string>('');
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
+
 
         const res = await fetch('/api/createCategories', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 name,
-                merchants: merchants.split(',').map(m => m.trim()),
+                merchantName,
+                description
             }),
         });
 
         const data = await res.json();
         if (data.success) {
-            setMessage('The category has been created successfully!');
+            setMessage(data.message);
             setName('');
-            setMerchants('');
+            setMerchantName('');
+            setDescription('')
         } else {
             setMessage(`Error: ${data.error}`);
         }
@@ -38,8 +43,13 @@ export default function CreateCategoryPage() {
                 </label>
                 <br />
                 <label>
-                    Търговци (разделени със запетая):
-                    <textarea value={merchants} onChange={e => setMerchants(e.target.value)} rows={4} />
+                    Име на Търговец:
+                    <input value={merchantName} onChange={e => setMerchantName(e.target.value)} required />
+                </label>
+                <br />
+                <label>
+                    Описание:
+                    <textarea value={description} onChange={e => setDescription(e.target.value)} rows={4} />
                 </label>
                 <br />
                 <button type="submit">Създай</button>
