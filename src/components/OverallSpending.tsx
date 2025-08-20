@@ -1,12 +1,10 @@
 import styles from '../styles/Budget.module.css'
-import {  getCategoryAmount, getCategoryTransactions } from '../lib/BudgetParser';
+import { getCategoryAmount, getCategoryTransactions } from '../lib/BudgetParser';
 import { PieChart } from 'react-minimal-pie-chart';
 import { OverallSpendingType } from '@/types/types';
-import { Categories } from '@/pages/Budget';
-
-
 
 export function OverallSpending(state: Readonly<OverallSpendingType>) {
+  const Categories = state.categories
   const transactions = state.transactions
   const spend = state.spend
   const received = state.received

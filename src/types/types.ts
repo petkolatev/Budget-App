@@ -21,6 +21,7 @@ export interface OverallSpendingType {
     transactions: Transaction[] | undefined
     spend: number | undefined
     received: number | undefined
+    categories: string[][]
 }
 
 
@@ -28,4 +29,4 @@ export interface BudgetState {
     value: number;
     transactions?: Transaction[];
     status: 'idle' | 'loading' | 'failed';
-  }
+}

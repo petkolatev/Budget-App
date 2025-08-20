@@ -10,8 +10,6 @@ export default function CreateCategoryPage() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
-
-
         const res = await fetch('/api/createCategories', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

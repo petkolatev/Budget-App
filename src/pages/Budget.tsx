@@ -6,10 +6,10 @@ import { selectReceived, selectSpend } from '../lib/budgetSlice';
 import { OverallSpending } from '../components/OverallSpending';
 import { TransactionTable } from '../components/TransactionTable';
 import { Transaction } from '@/types/types';
-
-export let Categories: []
+import { useDataContext } from '@/context/CategoryContext';
 
 export function Budget() {
+    const { Categories } = useDataContext()
     const [state, setState] = useState<Transaction[]>([])
     const [openFileSelector, { filesContent }] = useFilePicker({
         readAs: "Text",
@@ -18,28 +18,15 @@ export function Budget() {
 
     const spend = selectSpend(state)
     const received = selectReceived(state)
-    useEffect(() => {
-        const data = localStorage.getItem('categories') 
-        if(data){
-            Categories = JSON.parse(data)
-        }
-        const saved = localStorage.getItem('state')
-        if (saved) {
-            const parsed = JSON.parse(saved)
-            setState(parsed)
-        }
-    }, [])
-
 
     useEffect(() => {
         if (filesContent[0]?.content) {
-            const budget = parse(filesContent[0].content);
+            const budget = parse(filesContent[0].content, Categories);
             setState(budget)
             localStorage.setItem('state', JSON.stringify(budget))
         }
 
     }, [filesContent])
-
 
     return (
         <div>
@@ -57,6 +44,7 @@ export function Budget() {
                 transactions={state}
                 spend={spend}
                 received={received}
+                categories={Categories}
             />
             }
             {state.length !== 0 && Categories!.map((category: string[], index: Key | null | undefined) => {

@@ -1,5 +1,4 @@
 import { Transaction } from "@/types/types"
-import { Categories } from "@/pages/Budget"
 
 const LINE_START_DEFAULT = 1
 
@@ -26,9 +25,7 @@ const LINE_START_DEFAULT = 1
 //     ['Без Категория']
 // ]
 
-
-
-export const parse = (fileContent: string) => {
+export const parse = (fileContent: string,Categories:string[][]) => {
     const result: Transaction[] = []
     fileContent.split(/\r?\n/)
         .forEach((line, lineIndex) => {
@@ -37,7 +34,7 @@ export const parse = (fileContent: string) => {
 
             const lineArr = line.split('|')
             const date = lineArr[0]
-            // Remove empty line
+        
             if (!date)
                 return
             const amount = parseFloat(lineArr[2]?.replace(/,/g, ''))
@@ -46,7 +43,7 @@ export const parse = (fileContent: string) => {
             const contragent = lineArr[5]?.trim()
             const reason = lineArr[6]?.trim()
             const info = lineArr[7]?.trim()
-            const category = getTransactionCategory(contragent, document, reason, info)
+            const category = getTransactionCategory(contragent, document, reason, info,Categories)
 
             result.push({ date, amount, type, document, contragent, reason, info, category })
         })
@@ -55,7 +52,7 @@ export const parse = (fileContent: string) => {
 
 const match = (str: string, pattern: string) => str.indexOf(pattern) !== -1
 
-const getTransactionCategory = (contragent: string, document: string, reason: string, info: string) => {
+const getTransactionCategory = (contragent: string, document: string, reason: string, info: string,Categories:string[][]) => {
 
     let result = 'Без Категория'
     Categories.forEach((category:string[]) => {
