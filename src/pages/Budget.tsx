@@ -9,7 +9,7 @@ import { Transaction } from '@/types/types';
 import { useDataContext } from '@/context/CategoryContext';
 
 export function Budget() {
-    const { Categories } = useDataContext()
+    const { categories: categories } = useDataContext()
     const [state, setState] = useState<Transaction[]>([])
     const [openFileSelector, { filesContent }] = useFilePicker({
         readAs: "Text",
@@ -21,7 +21,7 @@ export function Budget() {
 
     useEffect(() => {
         if (filesContent[0]?.content) {
-            const budget = parse(filesContent[0].content, Categories);
+            const budget = parse(filesContent[0].content, categories);
             setState(budget)
             localStorage.setItem('state', JSON.stringify(budget))
         }
@@ -44,10 +44,10 @@ export function Budget() {
                 transactions={state}
                 spend={spend}
                 received={received}
-                categories={Categories}
+                categories={categories}
             />
             }
-            {state.length !== 0 && Categories!.map((category: string[], index: Key | null | undefined) => {
+            {state.length !== 0 && categories!.map((category: string[], index: Key | null | undefined) => {
                 const categoryTransactions = getCategoryTransactions(category[0], state)
                 const categorySpend = getCategoryAmount(categoryTransactions, 'debit')
                 return <TransactionTable

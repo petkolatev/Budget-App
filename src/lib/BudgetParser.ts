@@ -25,7 +25,7 @@ const LINE_START_DEFAULT = 1
 //     ['Без Категория']
 // ]
 
-export const parse = (fileContent: string,Categories:string[][]) => {
+export const parse = (fileContent: string,categories:string[][]) => {
     const result: Transaction[] = []
     fileContent.split(/\r?\n/)
         .forEach((line, lineIndex) => {
@@ -43,7 +43,7 @@ export const parse = (fileContent: string,Categories:string[][]) => {
             const contragent = lineArr[5]?.trim()
             const reason = lineArr[6]?.trim()
             const info = lineArr[7]?.trim()
-            const category = getTransactionCategory(contragent, document, reason, info,Categories)
+            const category = getTransactionCategory(contragent, document, reason, info,categories)
 
             result.push({ date, amount, type, document, contragent, reason, info, category })
         })
@@ -52,10 +52,10 @@ export const parse = (fileContent: string,Categories:string[][]) => {
 
 const match = (str: string, pattern: string) => str.indexOf(pattern) !== -1
 
-const getTransactionCategory = (contragent: string, document: string, reason: string, info: string,Categories:string[][]) => {
+const getTransactionCategory = (contragent: string, document: string, reason: string, info: string,categories:string[][]) => {
 
     let result = 'Без Категория'
-    Categories.forEach((category:string[]) => {
+    categories.forEach((category:string[]) => {
         category.forEach((pattern: string, pIndex: number) => {
             if (pIndex === 0)
                 return
