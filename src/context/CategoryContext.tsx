@@ -3,10 +3,15 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 type CategoryProviderProps = {
     children: ReactNode;
 };
+type CategoryContextType = {
+    categories: string[][];
+    error: string | null;
+};
 
-const CategoryContext = createContext<{ categories: string[][] }>({ categories: [] });
+const CategoryContext = createContext<CategoryContextType>({ categories: [], error: null });
 
 export const CategoryProvider = ({ children }: CategoryProviderProps) => {
+    const [error, setError] = useState<string | null>(null)
     const [categories, setCategories] = useState([])
 
     useEffect(() => {
@@ -24,15 +29,15 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
 
                 setCategories(categories)
 
-            } catch (error) {
-                throw new Error('Failed to fetch categories')
+            } catch (err: any) {
+                setError('Fail to fetch data')
             }
         }
         fetchData()
     }, [])
 
     return (
-        < CategoryContext.Provider value={{ categories }}>
+        < CategoryContext.Provider value={{ categories, error }}>
             {children}
         </CategoryContext.Provider>
     )

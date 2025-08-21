@@ -23,7 +23,6 @@ export function Budget() {
         if (filesContent[0]?.content) {
             const budget = parse(filesContent[0].content, categories);
             setState(budget)
-            localStorage.setItem('state', JSON.stringify(budget))
         }
 
     }, [filesContent])
