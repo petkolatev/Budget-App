@@ -21,21 +21,12 @@ export interface OverallSpendingType {
     transactions: Transaction[] | undefined
     spend: number | undefined
     received: number | undefined
+    categories: string[][]
 }
 
-export interface Transaction {
-    date: string,
-    amount: number,
-    type: 'debit' | 'credit',
-    document: string,
-    contragent: string,
-    reason: string,
-    info: string,
-    category: string
-}
 
 export interface BudgetState {
     value: number;
     transactions?: Transaction[];
     status: 'idle' | 'loading' | 'failed';
-  }
+}

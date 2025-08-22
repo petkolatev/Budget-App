@@ -1,13 +1,15 @@
 import { useFilePicker } from 'use-file-picker';
 import styles from '../styles/Budget.module.css'
-import { parse, Categories, getCategoryTransactions, getCategoryAmount } from '../lib/BudgetParser';
-import { useEffect, useState } from 'react';
+import { parse, getCategoryTransactions, getCategoryAmount } from '../lib/BudgetParser';
+import { Key, useEffect, useState } from 'react';
 import { selectReceived, selectSpend } from '../lib/budgetSlice';
 import { OverallSpending } from '../components/OverallSpending';
 import { TransactionTable } from '../components/TransactionTable';
 import { Transaction } from '@/types/types';
+import { useDataContext } from '@/context/CategoryContext';
 
 export function Budget() {
+    const { categories: categories } = useDataContext()
     const [state, setState] = useState<Transaction[]>([])
     const [openFileSelector, { filesContent }] = useFilePicker({
         readAs: "Text",
@@ -19,13 +21,11 @@ export function Budget() {
 
     useEffect(() => {
         if (filesContent[0]?.content) {
-
-            const budget = parse(filesContent[0].content);
+            const budget = parse(filesContent[0].content, categories);
             setState(budget)
         }
 
     }, [filesContent])
-
 
     return (
         <div>
@@ -43,9 +43,10 @@ export function Budget() {
                 transactions={state}
                 spend={spend}
                 received={received}
+                categories={categories}
             />
             }
-            {state.length !== 0 && Categories.map((category, index) => {
+            {state.length !== 0 && categories!.map((category: string[], index: Key | null | undefined) => {
                 const categoryTransactions = getCategoryTransactions(category[0], state)
                 const categorySpend = getCategoryAmount(categoryTransactions, 'debit')
                 return <TransactionTable

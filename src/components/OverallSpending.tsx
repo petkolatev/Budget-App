@@ -1,15 +1,14 @@
 import styles from '../styles/Budget.module.css'
-import { Categories, getCategoryAmount, getCategoryTransactions } from '../lib/BudgetParser';
+import { getCategoryAmount, getCategoryTransactions } from '../lib/BudgetParser';
 import { PieChart } from 'react-minimal-pie-chart';
 import { OverallSpendingType } from '@/types/types';
 
-
-
-export function OverallSpending(state: Readonly<OverallSpendingType>) {
-  const transactions = state.transactions
-  const spend = state.spend
-  const received = state.received
-  const pieChartData = transactions && Categories.map((category) => {
+export function OverallSpending(props: Readonly<OverallSpendingType>) {
+  const categories = props.categories
+  const transactions = props.transactions
+  const spend = props.spend
+  const received = props.received
+  const pieChartData = transactions && categories.map((category) => {
     const categoryTransactions = getCategoryTransactions(category[0], transactions)
     const categorySpend = getCategoryAmount(categoryTransactions, 'debit')
     return {
@@ -46,7 +45,7 @@ export function OverallSpending(state: Readonly<OverallSpendingType>) {
           </tr>
         </thead>
         <tbody className={styles.tbody}>
-          {transactions && Categories.map((category, index) => {
+          {transactions && categories.map((category, index) => {
             const categoryTransactions = getCategoryTransactions(category[0], transactions)
             const categorySpend = getCategoryAmount(categoryTransactions, 'debit')
             const categoryReceived = getCategoryAmount(categoryTransactions, 'credit')
