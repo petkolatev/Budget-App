@@ -7,7 +7,7 @@ interface IMerchant {
 
 export interface ICategory extends Document {
   name: string;
-  merchants: IMerchant[];
+  merchants?: IMerchant[];
 }
 
 const MerchantSchema = new Schema<IMerchant>(
