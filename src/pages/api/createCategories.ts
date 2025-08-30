@@ -13,37 +13,9 @@ export default async function handler(
     await connectDB();
 
     if (req.method === 'POST') {
-        const { name, merchantName, description } = req.body;
+        const { name } = req.body;
 
-        if (name && merchantName && description) {
-
-            try {
-                const category = await Category.findOne({ name });
-
-                const exists = category?.merchants.some(
-                    (m: any) => m.name === merchantName
-                );
-
-                if (exists) {
-                    return res.status(200).json({ success: true, message: 'Merchant already exists in category' });
-                }
-
-                const result = await Category.updateOne(
-                    { name },
-                    { $push: { merchants: { name: merchantName, description } } },
-                    { upsert: true }
-                );
-
-                const message = result.upsertedId
-                    ? 'Created new category'
-                    : 'Updated existing category';
-
-                res.status(200).json({ success: true, message });
-
-            } catch (error: any) {
-                res.status(500).json({ success: false, error: error.message });
-            }
-        } else if (name) {
+        if (name) {
             try {
                 await Category.create({ name })
                 res.status(200).json({ success: true, message: 'Created new category' });

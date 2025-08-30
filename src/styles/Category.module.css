@@ -70,6 +70,13 @@
     border-radius: 5em;
 }
 
+.categoryName h2 button {
+    width: 30px;
+    margin-left: 2em;
+}
+
+
+
 .categoryName button:hover {
     background-color: #eee;
     color: #666;

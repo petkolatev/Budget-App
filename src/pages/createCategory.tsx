@@ -12,10 +12,32 @@ export default function CreateCategoryPage() {
     const [message, setMessage] = useState<string>('');
     const { categories, reloadCategories } = useDataContext()
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleCategorySubmit = async (e: FormEvent) => {
         e.preventDefault();
 
         const res = await fetch('/api/createCategories', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name
+            }),
+        });
+
+        const data = await res.json();
+        if (data.success) {
+            setMessage(data.message);
+            setName('');
+            reloadCategories()
+            setCreateCategory(false)
+        } else {
+            setMessage(`Error: ${data.error}`);
+        }
+    };
+
+    const handleMerchantSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+
+        const res = await fetch('/api/createMerchants', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -33,6 +55,7 @@ export default function CreateCategoryPage() {
             setDescription('')
             reloadCategories()
             setCreateCategory(false)
+            setActiveCategory(null)
         } else {
             setMessage(`Error: ${data.error}`);
         }
@@ -66,7 +89,7 @@ export default function CreateCategoryPage() {
                 <button onClick={() => setCreateCategory(!createCategory)}>Добави категория</button>
                 {createCategory ?
                     <div className={styles.category}>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleCategorySubmit}>
                             <label>
                                 Име на категория:
                                 <input value={name} onChange={e => setName(e.target.value)} required />
@@ -103,7 +126,7 @@ export default function CreateCategoryPage() {
                                     }
                                 >Добави търговец</button>
                                 {activeCategory === categoryName && (
-                                    <form onSubmit={handleSubmit}>
+                                    <form onSubmit={handleMerchantSubmit}>
                                         <label>
                                             Име на Търговец:
                                             <input
@@ -123,6 +146,7 @@ export default function CreateCategoryPage() {
                                         </label>
                                         <br />
                                         <button type="submit">Създай</button>
+                                        {message && <p className={styles.msg}>{message}</p>}
                                     </form>
                                 )}
 

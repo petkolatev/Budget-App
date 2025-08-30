@@ -27,12 +27,12 @@ export function OverallSpending(props: Readonly<OverallSpendingType>) {
       </div>
       <PieChart
         data={pieChartData ?? []}
-        label={({ dataEntry }) => dataEntry.title}
+        label={({ dataEntry }) => dataEntry.percentage > 1 ? dataEntry.title : ''}
         labelStyle={() => ({
-          fontSize: '3px',
+          fontSize: '2px',
           fontFamily: 'sans-serif',
         })}
-        radius={22}
+        radius={26}
         labelPosition={112}
       />
       <table className={styles.table}>
