@@ -95,7 +95,7 @@ export default function CreateCategoryPage() {
             return (
               <div key={categoryName} className={styles.categoryName}>
                 <h2>
-                  {categoryName}{' '}
+                  {categoryName}
                   <button onClick={() => handleDelete(categoryName, '')}>X</button>
                 </h2>
 
