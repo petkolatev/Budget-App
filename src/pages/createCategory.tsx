@@ -71,7 +71,7 @@ export default function CreateCategoryPage() {
   return (
     <div>
       <div className={styles.category}>
-        <button onClick={() => {setCreateCategory(!createCategory),setName('')}}>Добави категория</button>
+        <button onClick={() => { setCreateCategory(!createCategory), setName(''), setMessage('') }}>Добави категория</button>
         {createCategory && (
           <div className={styles.category}>
             <form onSubmit={handleCategorySubmit}>
@@ -104,6 +104,7 @@ export default function CreateCategoryPage() {
                   onClick={() => {
                     setName(categoryName);
                     setShowMerchantModal(true);
+                    setMessage('')
                   }}
                 >
                   Добави търговец
