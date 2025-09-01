@@ -65,6 +65,12 @@
     height: 3em;
 }
 
+.PopUp{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .categoryName button {
     width: 7em;
     border-radius: 5em;
