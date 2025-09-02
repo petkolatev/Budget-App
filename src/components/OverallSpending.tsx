@@ -25,15 +25,16 @@ export function OverallSpending(props: Readonly<OverallSpendingType>) {
         <span> Изхарчени: <strong>{spend?.toFixed(0)}</strong> </span>
         <span> Получени:  <strong>{received?.toFixed(0)}</strong> </span>
       </div>
-      <PieChart
+      <PieChart className={styles.PieChart}
         data={pieChartData ?? []}
-        label={({ dataEntry }) => dataEntry.percentage > 1 ? dataEntry.title : ''}
+        label={({ dataEntry }) => dataEntry.title}
         labelStyle={() => ({
           fontSize: '2px',
           fontFamily: 'sans-serif',
         })}
         radius={26}
         labelPosition={112}
+
       />
       <table className={styles.table}>
         <thead className={styles.thead}>

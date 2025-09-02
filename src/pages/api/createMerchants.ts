@@ -20,6 +20,8 @@ export default async function handler(
             try {
                 const category = await Category.findOne({ name });
 
+                if (!category) return res.status(404).json({ success: false, error: "Category doesn't exists" })
+
                 const exists = category?.merchants.some(
                     (m: any) => m.name === merchantName
                 );
@@ -28,17 +30,12 @@ export default async function handler(
                     return res.status(200).json({ success: true, message: 'Merchant already exists in category' });
                 }
 
-                const result = await Category.updateOne(
+                await Category.updateOne(
                     { name },
                     { $push: { merchants: { name: merchantName, description } } },
                     { upsert: true }
                 );
-
-                const message = result.upsertedId
-                    ? 'Created new category'
-                    : 'Updated existing category';
-
-                res.status(200).json({ success: true, message });
+                res.status(200).json({ success: true, message: 'Created new merchant' })
 
             } catch (error: any) {
                 res.status(500).json({ success: false, error: error.message });
