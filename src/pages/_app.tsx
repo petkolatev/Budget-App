@@ -5,12 +5,12 @@ import Navbar from "@/components/navbar";
 import { CategoryProvider } from "@/context/CategoryContext";
 
 export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <SessionProvider session={pageProps.session}>
-      <CategoryProvider>
-      <Navbar/>
-      <Component {...pageProps} />
-      </CategoryProvider>
-    </SessionProvider>
-  );
+    return (
+        <SessionProvider session={pageProps.session}>
+            <CategoryProvider>
+                <Navbar />
+                <Component {...pageProps} />
+            </CategoryProvider>
+        </SessionProvider>
+    );
 }
