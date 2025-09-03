@@ -1,34 +1,28 @@
-import mongoose, { Schema, Document, model, models } from 'mongoose';
+import mongoose, { Types } from "mongoose";
 
-interface IMerchant {
-    name?: string;
-    description?: string;
-}
-
-export interface ICategory extends Document {
+export interface CategoryType {
+    _id: Types.ObjectId;
     name: string;
-    merchants: IMerchant[];
 }
 
-const MerchantSchema = new Schema<IMerchant>(
-    {
-        name: { type: String, required: true },
-        description: { type: String, required: true },
-    },
-    { _id: false }
-);
+export interface MerchantType {
+    _id: Types.ObjectId;
+    name: string;
+    description?: string;
+    categoryId?: Types.ObjectId;
+}
 
-const CategorySchema = new Schema<ICategory>({
-    name: { type: String, required: true, unique: true },
-    merchants: { type: [MerchantSchema], default: [] },
+const CategorySchema = new mongoose.Schema({
+    name: { type: String, required: true },
 });
 
-CategorySchema.index(
-    { 'merchants.name': 1 },
-    {
-        unique: true,
-        partialFilterExpression: { 'merchants.name': { $exists: true, $ne: null } }
-    }
-)
+const MerchantSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    description: String,
+    categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+});
 
-export default models.Category || model<ICategory>('Category', CategorySchema);
+export const Category =
+    mongoose.models.Category || mongoose.model("Category", CategorySchema);
+export const Merchant =
+    mongoose.models.Merchant || mongoose.model("Merchant", MerchantSchema);

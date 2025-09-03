@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '@/lib/mongodb';
-import Category from '../../types/Category';
+import { Category } from '@/types/Category';
 
 type Data =
     | { success: true; message: string }

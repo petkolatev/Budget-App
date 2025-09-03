@@ -52,15 +52,29 @@ export default function CreateCategoryPage() {
         }
     };
 
-    const handleDelete = async (categoryName: string, merchantName: string) => {
-        const deletedItem = merchantName || categoryName;
-        const confirmed = window.confirm(`Сигурен ли си, че искаш да изтриеш ${deletedItem}?`);
+    const handleDeleteCategory = async (categoryName: string) => {
+        const confirmed = window.confirm(`Сигурен ли си, че искаш да изтриеш ${categoryName}?`);
+        if (!confirmed) return;
+
+        const res = await fetch('/api/deleteCategory', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ categoryName }),
+        });
+
+        if (res.status === 200) {
+            reloadCategories();
+        }
+    };
+
+    const handleDeleteMerchant = async (merchantName: string) => {
+        const confirmed = window.confirm(`Сигурен ли си, че искаш да изтриеш ${merchantName}?`);
         if (!confirmed) return;
 
         const res = await fetch('/api/deleteMerchant', {
-            method: 'POST',
+            method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ categoryName, merchantName }),
+            body: JSON.stringify({ merchantName }),
         });
 
         if (res.status === 200) {
@@ -96,7 +110,7 @@ export default function CreateCategoryPage() {
                             <div key={categoryName} className={styles.categoryName}>
                                 <h2>
                                     {categoryName}
-                                    <button onClick={() => handleDelete(categoryName, '')}>X</button>
+                                    <button onClick={() => handleDeleteCategory(categoryName)}>X</button>
                                 </h2>
 
                                 <button
@@ -114,7 +128,7 @@ export default function CreateCategoryPage() {
                                     {merchants.map(merchant => (
                                         <li key={merchant}>
                                             <span>{merchant}</span>
-                                            <button onClick={() => handleDelete(categoryName, merchant)}>X</button>
+                                            <button onClick={() => handleDeleteMerchant(merchant)}>X</button>
                                         </li>
                                     ))}
                                 </ul>

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '../../lib/mongodb';
-import {Merchant } from '@/types/Category';
+import { Category } from '@/types/Category';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'DELETE') {
@@ -8,15 +8,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     await connectDB()
 
-    const { merchantName } = req.body;
+    const { categoryName } = req.body;
 
-    if(!merchantName){
+    if (!categoryName) {
         return res.status(400).json({ success: false, error: 'Invalid data' });
     }
 
     try {
-        await Merchant.deleteOne({ name: merchantName })
-        res.status(200).json({ success: true, message: 'Merchant deleted' });
+        await Category.deleteOne({ name: categoryName })
+        res.status(200).json({ success: true, message: 'Category deleted' });
     } catch (error) {
         res.status(500).json({ success: false, error: error });
     }

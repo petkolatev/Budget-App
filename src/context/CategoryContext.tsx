@@ -13,7 +13,7 @@ type CategoryContextType = {
 const CategoryContext = createContext<CategoryContextType>({
     categories: [],
     error: null,
-    reloadCategories: () => {},
+    reloadCategories: () => { },
 });
 
 export const CategoryProvider = ({ children }: CategoryProviderProps) => {
@@ -24,14 +24,12 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
         try {
             const response = await fetch('/api/getCategories');
             const data = await response.json();
-
             const formattedCategories = data.categories.map(
                 (cat: { name: string; merchants: { name: string }[] }) => {
                     const merchantNames = cat.merchants.map(m => m.name);
                     return [cat.name, ...merchantNames];
                 }
             );
-
             setCategories(formattedCategories);
             setError(null);
         } catch (err: any) {

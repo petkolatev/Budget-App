@@ -1,25 +1,34 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import connectDB from '@/lib/mongodb';
-import Category, { ICategory } from '../../types/Category';
-
-type Data =
-    | { success: true; categories: ICategory[] }
-    | { success: false; error: string };
+import type { NextApiRequest, NextApiResponse } from "next";
+import mongoose, { Types } from "mongoose";
+import connectDB from "@/lib/mongodb";
+import { Category, CategoryType, Merchant, MerchantType } from "@/types/Category";
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<Data>
+    res: NextApiResponse
 ) {
-    await connectDB();
+    try {
+        await connectDB();
 
-    if (req.method === 'GET') {
-        try {
-            const categories = await Category.find({});
-            res.status(200).json({ success: true, categories });
-        } catch (error: any) {
-            res.status(500).json({ success: false, error: error.message });
-        }
-    } else {
-        res.status(405).json({ success: false, error: 'Method is not allowed' });
+        const categories = await Category.find().lean<CategoryType[]>();
+        const merchants = await Merchant.find().lean<MerchantType[]>();
+        const formatted = categories.map((cat) => {
+            const catMerchants = merchants.filter((m) => {
+                if (!m.categoryId) return false;
+                return m.categoryId.equals(cat._id);
+            });
+            return {
+                name: cat.name,
+                merchants: catMerchants.map((m) => ({
+                    name: m.name,
+                    description: m.description || "",
+                })),
+            };
+        });
+
+        res.status(200).json({ categories: formatted });
+    } catch (err) {
+        console.error("API error:", err);
+        res.status(500).json({ error: "Failed to fetch categories" });
     }
 }
