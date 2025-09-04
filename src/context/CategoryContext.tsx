@@ -22,7 +22,7 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch('/api/getCategories');
+            const response = await fetch('/api/getCategoriesWithMerchants');
             const data = await response.json();
             const formattedCategories = data.categories.map(
                 (cat: { name: string; merchants: { name: string }[] }) => {

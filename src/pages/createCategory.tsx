@@ -2,6 +2,7 @@ import { useDataContext } from '@/context/CategoryContext';
 import styles from '../styles/Category.module.css';
 import { useState, FormEvent } from 'react';
 import Modal from '@/components/Modal';
+import Toast from '@/components/Toast';
 
 export default function CreateCategoryPage() {
     const [createCategory, setCreateCategory] = useState(false);
@@ -10,6 +11,7 @@ export default function CreateCategoryPage() {
     const [merchantName, setMerchantName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [message, setMessage] = useState<string>('');
+    const [toastMessage, setToastMessage] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
     const { categories, reloadCategories } = useDataContext();
 
     const handleCategorySubmit = async (e: FormEvent) => {
@@ -23,11 +25,13 @@ export default function CreateCategoryPage() {
         const data = await res.json();
         if (data.success) {
             setMessage(data.message);
+            showToast(data.message, 'success')
             setName('');
             reloadCategories();
             setCreateCategory(false);
         } else {
-            setMessage(`Error: ${data.error}`);
+            showToast(`Error: ${data.error}`, 'error')
+
         }
     };
 
@@ -42,13 +46,15 @@ export default function CreateCategoryPage() {
         const data = await res.json();
         if (data.success) {
             setMessage(data.message);
+            showToast(data.message, 'success')
             setName('')
             setMerchantName('');
             setDescription('');
             setShowMerchantModal(false);
             reloadCategories();
         } else {
-            setMessage(`Error: ${data.error}`);
+            showToast(`Error: ${data.error}`, 'error')
+
         }
     };
 
@@ -62,10 +68,39 @@ export default function CreateCategoryPage() {
             body: JSON.stringify({ categoryName }),
         });
 
+        const data = await res.json();
         if (res.status === 200) {
+            showToast(data.message, 'success')
             reloadCategories();
+        } else {
+            showToast(`Error: ${data.error}`, 'error')
+
         }
+
+
     };
+
+    const deleteAllMerchantsFromCategory = async (categoryName: string) => {
+        const confirmed = window.confirm(`Сигурен ли си, че искаш да изтриеш всички търговци от ${categoryName}?`);
+        if (!confirmed) return;
+
+        const res = await fetch('/api/deleteAllMerchantsFromCategory', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ categoryName }),
+        });
+
+        const data = await res.json()
+
+        if (res.status === 200) {
+            showToast(data.message, 'success')
+            reloadCategories();
+        } else {
+            showToast(`Error: ${data.error}`, 'error')
+
+        }
+
+    }
 
     const handleDeleteMerchant = async (merchantName: string) => {
         const confirmed = window.confirm(`Сигурен ли си, че искаш да изтриеш ${merchantName}?`);
@@ -76,11 +111,23 @@ export default function CreateCategoryPage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ merchantName }),
         });
+        const data = await res.json()
 
         if (res.status === 200) {
+            showToast(data.message, 'success')
             reloadCategories();
+        } else {
+            showToast(`Error: ${data.error}`, 'error')
+
         }
     };
+
+    const showToast = (msg: string, type: 'success' | 'error' = 'success', duration = 3000) => {
+        setToastMessage({ message: msg, type });
+        setTimeout(() => setToastMessage(null), duration);
+    };
+
+
 
     return (
         <div>
@@ -95,7 +142,6 @@ export default function CreateCategoryPage() {
                             </label>
                             <button type="submit">Създай</button>
                         </form>
-                        {message && <p className={styles.msg}>{message}</p>}
                     </div>
                 )}
             </div>
@@ -130,8 +176,18 @@ export default function CreateCategoryPage() {
                                             <span>{merchant}</span>
                                             <button onClick={() => handleDeleteMerchant(merchant)}>X</button>
                                         </li>
+
                                     ))}
                                 </ul>
+
+                                <button
+                                    className={styles.addMerchant}
+                                    onClick={() => {
+                                        deleteAllMerchantsFromCategory(categoryName)
+                                    }}
+                                >
+                                    Изтрии всички
+                                </button>
                             </div>
                         );
                     })}
@@ -162,6 +218,16 @@ export default function CreateCategoryPage() {
                     {message && <p className={styles.msg}>{message}</p>}
                 </form>
             </Modal>
+
+            {toastMessage && (
+                <Toast
+                    message={toastMessage.message}
+                    type={toastMessage.type}
+                    onClose={() => setToastMessage(null)}
+                />
+            )}
+
+
         </div>
     );
 }
