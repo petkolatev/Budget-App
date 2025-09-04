@@ -12,6 +12,7 @@ export default function CreateCategoryPage() {
     const [description, setDescription] = useState<string>('');
     const [message, setMessage] = useState<string>('');
     const [toastMessage, setToastMessage] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+    const [confirmModal, setConfirmModal] = useState<{ open: boolean; action: () => void; message: string } | null>(null);
     const { categories, reloadCategories } = useDataContext();
 
     const handleCategorySubmit = async (e: FormEvent) => {
@@ -59,67 +60,66 @@ export default function CreateCategoryPage() {
     };
 
     const handleDeleteCategory = async (categoryName: string) => {
-        const confirmed = window.confirm(`Сигурен ли си, че искаш да изтриеш ${categoryName}?`);
-        if (!confirmed) return;
+        showConfirmation(`Сигурен ли си, че искаш да изтриеш ${categoryName}?`, async () => {
+            const res = await fetch('/api/deleteCategory', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ categoryName }),
+            });
 
-        const res = await fetch('/api/deleteCategory', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ categoryName }),
+            const data = await res.json();
+            if (res.status === 200) {
+                showToast(data.message, 'success');
+                reloadCategories();
+            } else {
+                showToast(`Error: ${data.error}`, 'error');
+            }
+            setConfirmModal(null); // Затваряме popup-а
         });
-
-        const data = await res.json();
-        if (res.status === 200) {
-            showToast(data.message, 'success')
-            reloadCategories();
-        } else {
-            showToast(`Error: ${data.error}`, 'error')
-
-        }
 
 
     };
 
-    const deleteAllMerchantsFromCategory = async (categoryName: string) => {
-        const confirmed = window.confirm(`Сигурен ли си, че искаш да изтриеш всички търговци от ${categoryName}?`);
-        if (!confirmed) return;
+    const deleteAllMerchantsFromCategory = (categoryName: string) => {
+        showConfirmation(`Сигурен ли си, че искаш да изтриеш всички търговци от ${categoryName}?`, async () => {
+            const res = await fetch('/api/deleteAllMerchantsFromCategory', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ categoryName }),
+            });
 
-        const res = await fetch('/api/deleteAllMerchantsFromCategory', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ categoryName }),
+            const data = await res.json();
+
+            if (res.status === 200) {
+                showToast(data.message, 'success');
+                reloadCategories();
+            } else {
+                showToast(`Error: ${data.error}`, 'error');
+            }
+
+            setConfirmModal(null);
         });
+    };
 
-        const data = await res.json()
+    const handleDeleteMerchant = (merchantName: string) => {
+        showConfirmation(`Сигурен ли си, че искаш да изтриеш ${merchantName}?`, async () => {
+            const res = await fetch('/api/deleteMerchant', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ merchantName }),
+            });
 
-        if (res.status === 200) {
-            showToast(data.message, 'success')
-            reloadCategories();
-        } else {
-            showToast(`Error: ${data.error}`, 'error')
+            const data = await res.json();
 
-        }
+            if (res.status === 200) {
+                showToast(data.message, 'success');
+                reloadCategories();
+            } else {
+                showToast(`Error: ${data.error}`, 'error');
+            }
 
-    }
-
-    const handleDeleteMerchant = async (merchantName: string) => {
-        const confirmed = window.confirm(`Сигурен ли си, че искаш да изтриеш ${merchantName}?`);
-        if (!confirmed) return;
-
-        const res = await fetch('/api/deleteMerchant', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ merchantName }),
+            setConfirmModal(null);
         });
-        const data = await res.json()
-
-        if (res.status === 200) {
-            showToast(data.message, 'success')
-            reloadCategories();
-        } else {
-            showToast(`Error: ${data.error}`, 'error')
-
-        }
     };
 
     const showToast = (msg: string, type: 'success' | 'error' = 'success', duration = 3000) => {
@@ -127,7 +127,9 @@ export default function CreateCategoryPage() {
         setTimeout(() => setToastMessage(null), duration);
     };
 
-
+    const showConfirmation = (message: string, onConfirm: () => void) => {
+        setConfirmModal({ open: true, action: onConfirm, message });
+    };
 
     return (
         <div>
@@ -227,6 +229,18 @@ export default function CreateCategoryPage() {
                 />
             )}
 
+            {confirmModal?.open && (
+                <Modal isOpen={true} onClose={() => setConfirmModal(null)}>
+                    <div className={styles.confirmation}>
+                        <p>{confirmModal.message}</p>
+                        <div className={styles.buttons}>
+                            <button className={styles.yes} onClick={confirmModal.action}> Да</button>
+                            <button className={styles.no} onClick={() => setConfirmModal(null)}> Не</button>
+                        </div>
+                    </div>
+
+                </Modal>
+            )}
 
         </div>
     );
