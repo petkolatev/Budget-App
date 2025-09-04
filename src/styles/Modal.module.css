@@ -12,12 +12,12 @@
 }
 
 .modal {
+    display: flex;
     background: linear-gradient(to right, #bfbfc3, #e8edef);
-    padding: 2rem;
     border-radius: 8px;
-    width: 90%;
     max-width: 500px;
     position: relative;
+    justify-content: center;
 
 }
 

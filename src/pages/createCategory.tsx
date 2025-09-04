@@ -10,7 +10,6 @@ export default function CreateCategoryPage() {
     const [name, setName] = useState<string>('');
     const [merchantName, setMerchantName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const [message, setMessage] = useState<string>('');
     const [toastMessage, setToastMessage] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
     const [confirmModal, setConfirmModal] = useState<{ open: boolean; action: () => void; message: string } | null>(null);
     const { categories, reloadCategories } = useDataContext();
@@ -25,7 +24,6 @@ export default function CreateCategoryPage() {
 
         const data = await res.json();
         if (data.success) {
-            setMessage(data.message);
             showToast(data.message, 'success')
             setName('');
             reloadCategories();
@@ -46,7 +44,6 @@ export default function CreateCategoryPage() {
 
         const data = await res.json();
         if (data.success) {
-            setMessage(data.message);
             showToast(data.message, 'success')
             setName('')
             setMerchantName('');
@@ -74,7 +71,7 @@ export default function CreateCategoryPage() {
             } else {
                 showToast(`Error: ${data.error}`, 'error');
             }
-            setConfirmModal(null); // Затваряме popup-а
+            setConfirmModal(null);
         });
 
 
@@ -134,7 +131,7 @@ export default function CreateCategoryPage() {
     return (
         <div>
             <div className={styles.category}>
-                <button onClick={() => { setCreateCategory(!createCategory), setName(''), setMessage('') }}>Добави категория</button>
+                <button onClick={() => { setCreateCategory(!createCategory), setName('') }}>Добави категория</button>
                 {createCategory && (
                     <div className={styles.category}>
                         <form onSubmit={handleCategorySubmit}>
@@ -166,7 +163,7 @@ export default function CreateCategoryPage() {
                                     onClick={() => {
                                         setName(categoryName);
                                         setShowMerchantModal(true);
-                                        setMessage('')
+                                       
                                     }}
                                 >
                                     Добави търговец
@@ -217,7 +214,6 @@ export default function CreateCategoryPage() {
                     </label>
                     <br />
                     <button type="submit">Създай</button>
-                    {message && <p className={styles.msg}>{message}</p>}
                 </form>
             </Modal>
 
