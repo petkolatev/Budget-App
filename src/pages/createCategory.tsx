@@ -2,7 +2,7 @@ import { useDataContext } from '@/context/CategoryContext';
 import styles from '../styles/Category.module.css';
 import { useState, FormEvent } from 'react';
 import Modal from '@/components/Modal';
-import Toast from '@/components/Toast';
+import { useToast } from '@/context/ToastContext';
 
 export default function CreateCategoryPage() {
     const [createCategory, setCreateCategory] = useState(false);
@@ -13,6 +13,7 @@ export default function CreateCategoryPage() {
     const [toastMessage, setToastMessage] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
     const [confirmModal, setConfirmModal] = useState<{ open: boolean; action: () => void; message: string } | null>(null);
     const { categories, reloadCategories } = useDataContext();
+    const { showToast } = useToast()
 
     const handleCategorySubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -119,11 +120,6 @@ export default function CreateCategoryPage() {
         });
     };
 
-    const showToast = (msg: string, type: 'success' | 'error' = 'success', duration = 3000) => {
-        setToastMessage({ message: msg, type });
-        setTimeout(() => setToastMessage(null), duration);
-    };
-
     const showConfirmation = (message: string, onConfirm: () => void) => {
         setConfirmModal({ open: true, action: onConfirm, message });
     };
@@ -216,14 +212,6 @@ export default function CreateCategoryPage() {
                     <button type="submit">Създай</button>
                 </form>
             </Modal>
-
-            {toastMessage && (
-                <Toast
-                    message={toastMessage.message}
-                    type={toastMessage.type}
-                    onClose={() => setToastMessage(null)}
-                />
-            )}
 
             {confirmModal?.open && (
                 <Modal isOpen={true} onClose={() => setConfirmModal(null)}>
