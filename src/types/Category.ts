@@ -1,26 +1,28 @@
-import mongoose, { Schema, Document, model, models } from 'mongoose';
+import mongoose, { Types } from "mongoose";
 
-interface IMerchant {
-  name: string;
-  description: string;
+export interface CategoryType {
+    _id: Types.ObjectId;
+    name: string;
 }
 
-export interface ICategory extends Document {
-  name: string;
-  merchants: IMerchant[];
+export interface MerchantType {
+    _id: Types.ObjectId;
+    name: string;
+    description?: string;
+    categoryId?: Types.ObjectId;
 }
 
-const MerchantSchema = new Schema<IMerchant>(
-  {
-    name: { type: String, required: true,unique:true },
-    description: { type: String, required: true },
-  },
-  { _id: false }
-);
-
-const CategorySchema = new Schema<ICategory>({
-  name: { type: String, required: true, unique: true },
-  merchants: { type: [MerchantSchema] },
+const CategorySchema = new mongoose.Schema({
+    name: { type: String, required: true },
 });
 
-export default models.Category || model<ICategory>('Category', CategorySchema);
+const MerchantSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    description: String,
+    categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+});
+
+export const Category =
+    mongoose.models.Category || mongoose.model("Category", CategorySchema);
+export const Merchant =
+    mongoose.models.Merchant || mongoose.model("Merchant", MerchantSchema);

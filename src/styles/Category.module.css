@@ -1,0 +1,167 @@
+.category {
+    display: flex;
+    flex-direction: column;
+    background-color: #eee;
+    padding: 30px 0;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+.category label {
+    display: block;
+    margin-bottom: 8px;
+    color: #666;
+}
+
+.category form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.category input {
+    width: 250px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.deleteCategory {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: #eee;
+    padding: 30px 0;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 40px;
+    gap: 20px;
+}
+
+.categoryName {
+    width: 28%;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.categoryName li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1px;
+    gap: 5px;
+
+}
+
+.addMerchant {
+    height: 3em;
+}
+
+.PopUp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    margin: auto;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.PopUp label {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.categoryBtns {
+    display: flex;
+    justify-content: center;
+    margin-left: 20px;
+    gap: 6px;
+}
+
+.categoryName button {
+    width: 7em;
+    border-radius: 5em;
+}
+
+.categoryName h2 button {
+    width: 30px;
+    margin-left: 2em;
+}
+
+
+
+.categoryName button:hover {
+    background-color: #eee;
+    color: #666;
+}
+
+.msg {
+    color: red;
+}
+
+.confirmation {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    margin: auto;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.confirmation p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.yes {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.no {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

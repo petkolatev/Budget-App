@@ -9,7 +9,7 @@ import { Transaction } from '@/types/types';
 import { useDataContext } from '@/context/CategoryContext';
 
 export function Budget() {
-    const { categories: categories } = useDataContext()
+    const { categories } = useDataContext()
     const [state, setState] = useState<Transaction[]>([])
     const [openFileSelector, { filesContent }] = useFilePicker({
         readAs: "Text",
