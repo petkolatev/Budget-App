@@ -5,6 +5,7 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #f7f7f7;
 }
 
 code {
@@ -100,20 +101,46 @@ button:active {
 
 .navbar {
     display: flex;
-    gap: 1rem;
-    text-align: center;
-    justify-content: center;
-    padding: 8px;
-    background-color: #eee;
+    justify-content: space-between;
+    margin: 0 5em;
+    background-color: #f7f7f7;
 }
 
-.navbar a {
+.navbar .icon {
+    display: flex;
+    align-content: center;
+    justify-items: center;
+    padding: 8px;
+    gap: 1em;
+
+}
+
+.navbar b {
+    font-size: 2.5em;
+    position: relative;
+    bottom: 6px;
+    color: #58585c;
+}
+
+.buttons {
+    display: flex;
+    gap: 1rem;
+    margin: 0 5em;
+    padding: 8px;
+
+}
+
+.navbar .buttons a {
     text-decoration: none;
-    width: 110px;
+    border-radius: 5px;
     background: #003781;
+    font-size: 33px;
+    width: 180px;
     border: 1px solid #003781;
-    cursor: pointer;
-    font-size: 20px;
+    text-align: center;
+    padding: 3px 10px;
     color: #eee;
-    padding: 0 10px;
+    cursor: pointer;
+
+
 }

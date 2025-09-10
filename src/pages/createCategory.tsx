@@ -10,7 +10,6 @@ export default function CreateCategoryPage() {
     const [name, setName] = useState<string>('');
     const [merchantName, setMerchantName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const [toastMessage, setToastMessage] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
     const [confirmModal, setConfirmModal] = useState<{ open: boolean; action: () => void; message: string } | null>(null);
     const { categories, reloadCategories } = useDataContext();
     const { showToast } = useToast()
@@ -159,7 +158,7 @@ export default function CreateCategoryPage() {
                                     onClick={() => {
                                         setName(categoryName);
                                         setShowMerchantModal(true);
-                                       
+
                                     }}
                                 >
                                     Добави търговец
@@ -191,9 +190,10 @@ export default function CreateCategoryPage() {
 
             <Modal isOpen={showMerchantModal} onClose={() => setShowMerchantModal(false)}>
                 <form className={styles.PopUp} onSubmit={handleMerchantSubmit}>
+                    <h2>Прибави търговец</h2>
                     <label>
-                        Име на Търговец:
-                        <input
+                        <p> Име</p>
+                        <input id='merchantName'
                             value={merchantName}
                             onChange={e => setMerchantName(e.target.value)}
                             required
@@ -201,15 +201,28 @@ export default function CreateCategoryPage() {
                     </label>
                     <br />
                     <label>
-                        Описание:
-                        <textarea
-                            value={description}
-                            onChange={e => setDescription(e.target.value)}
-                            rows={4}
-                        />
+
+                        <p>Категория</p>
+                        <select  
+                            onChange={e => setName(e.target.value)}
+                            required>
+                            <option value="">-- Избери категория --</option>
+                            {categories.map((category, index) => (
+                                <option key={index} value={category[0]}>
+                                    {category[0]}
+                                </option>
+                            ))}
+                        </select>
                     </label>
                     <br />
-                    <button type="submit">Създай</button>
+                    <div>
+                        <button type='button' onClick={() => {
+                            setMerchantName('');
+                            setName('')
+                            setShowMerchantModal(false)
+                        }}>Отказ</button>
+                        <button type="submit">Добави</button>
+                    </div>
                 </form>
             </Modal>
 

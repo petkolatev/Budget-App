@@ -13,7 +13,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     return (
         <div className={styles.overlay}>
             <div className={styles.modal}>
-                <button className={styles.closeBtn} onClick={onClose}>×</button>
+            <button style={{ backgroundColor: '#ffffff'}} className={styles.closeBtn} onClick={onClose}>X</button>
+
+
                 {children}
             </div>
         </div>
