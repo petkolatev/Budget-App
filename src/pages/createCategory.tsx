@@ -5,12 +5,12 @@ import Modal from '@/components/Modal';
 import { useToast } from '@/context/ToastContext';
 
 export default function CreateCategoryPage() {
-    const [createCategory, setCreateCategory] = useState(false);
     const [showMerchantModal, setShowMerchantModal] = useState(false);
+    const [confirmModal, setConfirmModal] = useState<{ open: boolean; action: () => void; message: string } | null>(null);
+    const [showCategoryModal, setShowCategoryModal] = useState(false);
     const [name, setName] = useState<string>('');
     const [merchantName, setMerchantName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const [confirmModal, setConfirmModal] = useState<{ open: boolean; action: () => void; message: string } | null>(null);
     const { categories, reloadCategories } = useDataContext();
     const { showToast } = useToast()
 
@@ -27,7 +27,7 @@ export default function CreateCategoryPage() {
             showToast(data.message, 'success')
             setName('');
             reloadCategories();
-            setCreateCategory(false);
+            setShowCategoryModal(false);
         } else {
             showToast(`Error: ${data.error}`, 'error')
 
@@ -125,19 +125,25 @@ export default function CreateCategoryPage() {
 
     return (
         <div>
-            <div className={styles.category}>
-                <button onClick={() => { setCreateCategory(!createCategory), setName('') }}>Добави категория</button>
-                {createCategory && (
-                    <div className={styles.category}>
-                        <form onSubmit={handleCategorySubmit}>
-                            <label>
-                                Име на категория:
-                                <input value={name} onChange={e => setName(e.target.value)} required />
-                            </label>
-                            <button type="submit">Създай</button>
-                        </form>
-                    </div>
-                )}
+            <div className={styles.create}>
+                <button
+                    onClick={() => {
+                        setShowCategoryModal(true);
+                        setName('');
+                    }}
+                >
+                    Добави категория
+                </button>
+
+                <button
+                    className={styles.addMerchant}
+                    onClick={() => {
+                        setShowMerchantModal(true);
+
+                    }}
+                >
+                    Добави търговец
+                </button>
             </div>
 
             <div className={styles.category}>
@@ -153,16 +159,7 @@ export default function CreateCategoryPage() {
                                     <button onClick={() => handleDeleteCategory(categoryName)}>X</button>
                                 </h2>
 
-                                <button
-                                    className={styles.addMerchant}
-                                    onClick={() => {
-                                        setName(categoryName);
-                                        setShowMerchantModal(true);
 
-                                    }}
-                                >
-                                    Добави търговец
-                                </button>
 
                                 <ul>
                                     {merchants.map(merchant => (
@@ -173,15 +170,16 @@ export default function CreateCategoryPage() {
 
                                     ))}
                                 </ul>
-
-                                <button
-                                    className={styles.addMerchant}
-                                    onClick={() => {
-                                        deleteAllMerchantsFromCategory(categoryName)
-                                    }}
-                                >
-                                    Изтрии всички
-                                </button>
+                                {merchants.length > 0 &&
+                                    <button
+                                        className={styles.addMerchant}
+                                        onClick={() => {
+                                            deleteAllMerchantsFromCategory(categoryName)
+                                        }}
+                                    >
+                                        Изтрии всички
+                                    </button>
+                                }
                             </div>
                         );
                     })}
@@ -190,6 +188,7 @@ export default function CreateCategoryPage() {
 
             <Modal isOpen={showMerchantModal} onClose={() => setShowMerchantModal(false)}>
                 <form className={styles.PopUp} onSubmit={handleMerchantSubmit}>
+
                     <h2>Прибави търговец</h2>
                     <label>
                         <p> Име</p>
@@ -203,7 +202,7 @@ export default function CreateCategoryPage() {
                     <label>
 
                         <p>Категория</p>
-                        <select  
+                        <select
                             onChange={e => setName(e.target.value)}
                             required>
                             <option value="">-- Избери категория --</option>
@@ -226,13 +225,42 @@ export default function CreateCategoryPage() {
                 </form>
             </Modal>
 
+            <Modal isOpen={showCategoryModal} onClose={() => setShowCategoryModal(false)}>
+                <form onSubmit={handleCategorySubmit} className={styles.PopUp}>
+                    <h2>Добави категория</h2>
+                    <label>
+                        <p>Име на категория:</p>
+                        <input
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            required
+                        />
+                    </label>
+                    <br />
+                    <div>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setName('');
+                                setShowCategoryModal(false);
+                            }}
+                        >
+                            Отказ
+                        </button>
+                        <button type="submit">Създай</button>
+                    </div>
+                </form>
+            </Modal>
+
+
             {confirmModal?.open && (
                 <Modal isOpen={true} onClose={() => setConfirmModal(null)}>
                     <div className={styles.confirmation}>
+                        <h1>Изтриване на елемент</h1>
                         <p>{confirmModal.message}</p>
                         <div className={styles.buttons}>
-                            <button className={styles.yes} onClick={confirmModal.action}> Да</button>
                             <button className={styles.no} onClick={() => setConfirmModal(null)}> Не</button>
+                            <button className={styles.yes} onClick={confirmModal.action}> Да</button>
                         </div>
                     </div>
 

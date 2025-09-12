@@ -14,7 +14,7 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
     const [toast, setToast] = useState<ToastState | null>(null);
 
     const showToast = (message: string, type: 'success' | 'error' = 'success') => {
-         setToast({ message, type });
+        setToast({ message, type });
 
     };
 

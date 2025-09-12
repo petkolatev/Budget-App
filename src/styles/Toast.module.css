@@ -1,25 +1,36 @@
 .toast {
     position: fixed;
-    bottom:90%;
-    right: 2%;
+    background-color: rgba(255, 255, 255, 1);
+    bottom: 80%;
+    right: 5%;
     padding: 12px 20px;
     border-radius: 8px;
     color: white;
     font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     display: flex;
     align-items: center;
     gap: 10px;
-    z-index: 1000;
+    z-index: 9999;
     animation: fadeIn 0.3s ease-in-out;
 }
 
+.toast img {
+    width: 100px;
+    height: 100px;
+}
+
+.toast span {
+    color: black;
+    font-size: 28px;
+}
+
 .success {
-    background-color: #4CAF50;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.5);
+
 }
 
 .error {
-    background-color: #F44336;
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
 }
 
 .toast button {

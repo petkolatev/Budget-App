@@ -5,7 +5,7 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #f7f7f7;
+    background-color: #eee
 }
 
 code {
@@ -80,7 +80,7 @@ h2 {
 }
 
 button {
-    background: #003781 repeat-x scroll 0 0;
+    background: #11316b repeat-x scroll 0 0;
     border: 1px solid #003781;
     cursor: pointer;
     font-size: 13px;
@@ -103,7 +103,7 @@ button:active {
     display: flex;
     justify-content: space-between;
     margin: 0 5em;
-    background-color: #f7f7f7;
+    background-color: #eee
 }
 
 .navbar .icon {
@@ -122,6 +122,7 @@ button:active {
     color: #58585c;
 }
 
+
 .buttons {
     display: flex;
     gap: 1rem;
@@ -130,7 +131,9 @@ button:active {
 
 }
 
-.navbar .buttons a {
+
+
+.navbar .buttons a{
     text-decoration: none;
     border-radius: 5px;
     background: #003781;
@@ -141,6 +144,4 @@ button:active {
     padding: 3px 10px;
     color: #eee;
     cursor: pointer;
-
-
 }

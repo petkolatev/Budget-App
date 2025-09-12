@@ -1,0 +1,124 @@
+.dashboard {
+    display: flex;
+    background-color:#eee;
+    width: 100%;
+    gap: 1em;
+
+}
+
+
+
+.pieChart {
+    min-width: 60%;
+    background-color: #f4f9fc;
+    border-radius: 5px;
+}
+
+.categories {
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f9fc;
+    border-radius: 5px;
+    min-width: 40%;
+    gap: 2em;
+}
+
+.create {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    margin-top: 2em;
+}
+
+.create button {
+    width: 220px;
+    height: 50px;
+    background-color: #5477a7;
+    border-radius: 15px;
+    font-size: 22px;
+}
+
+.PopUp {
+    display: flex;
+    flex-direction: column;
+    min-width: 650px;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 0 0 30px 0;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+.PopUp h2 {
+    font-size: 2.5em;
+    margin: 1em;
+    color: #3d3b3b;
+}
+
+.PopUp label {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    font-size: 2em;
+}
+
+.PopUp p {
+    margin: 1px;
+}
+
+.PopUp label input,
+.PopUp label select {
+    width: 540px;
+    height: 50px;
+    font-size: 25px;
+    border-radius: 8px;
+
+}
+
+.PopUp div {
+    display: flex;
+    max-width: 100%;
+    justify-content: center;
+    gap: 1.5em;
+}
+
+.PopUp button {
+    width: 260px;
+    height: 50px;
+    border-radius: 15px;
+    font-size: 27px;
+}
+
+.PopUp button:nth-child(1) {
+    background-color: #f1f1f2;
+    color: #3d3b3b;
+    border: none;
+}
+
+.categories h1 {
+    margin-left: 0.5em;
+    color: #0f1a34;
+}
+
+.category {
+    background-color: #fffdfd;
+    border-radius: 5px;
+    margin: 0 2em 0 2em;
+}
+
+.category h2 {
+    color: #0f1a34;
+    margin-left: 1em;
+}
+
+.merchantGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2em;
+}
+
+.merchants {
+    border-radius: 5px;
+    padding: 0.3em;
+}

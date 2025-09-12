@@ -28,6 +28,8 @@ export default function Navbar() {
                 {status === 'authenticated' && (
                     <>
                         <Link href='/createCategory'>Category</Link>
+                        <Link href='/dashboard'>Dashboard</Link>
+
                     </>
                 )}
             </div>

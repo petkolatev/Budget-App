@@ -1,13 +1,28 @@
+.create {
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    margin-top: 2em;
+}
+
+.create button {
+    width: 220px;
+    height: 50px;
+    border-radius: 5px;
+    font-size: 22px;
+}
+
 .category {
     display: flex;
     flex-direction: column;
-    background-color: #f7f7f7;
+    background-color: #eee;
     padding: 30px 0;
     width: 100%;
     align-items: center;
     text-align: center;
     margin: 0 auto;
     margin-top: 40px;
+    font-size: 22px;
 }
 
 .category label {
@@ -68,7 +83,7 @@
 .PopUp {
     display: flex;
     flex-direction: column;
-    min-width: 700px;
+    min-width: 650px;
     align-items: center;
     background: #ffffff;
     border-radius: 12px;
@@ -78,8 +93,10 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-.PopUp h2{
-    font-size: 3em;
+.PopUp h2 {
+    font-size: 2.5em;
+    margin: 1em;
+    color: #3d3b3b;
 }
 
 .PopUp label {
@@ -95,23 +112,31 @@
 
 .PopUp label input,
 .PopUp label select {
-    width: 480px;
+    width: 540px;
     height: 50px;
     font-size: 25px;
     border-radius: 8px;
 
 }
-.PopUp div{
+
+.PopUp div {
     display: flex;
     max-width: 100%;
     justify-content: center;
-    gap: 2em;
+    gap: 1.5em;
 }
 
 .PopUp button {
- width: 222px;
- height: 50px;
- border-radius: 10px;
+    width: 260px;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 27px;
+}
+
+.PopUp button:nth-child(1) {
+    background-color: #f1f1f2;
+    color: #3d3b3b;
+    border: none;
 }
 
 
@@ -144,41 +169,61 @@
 }
 
 .confirmation {
+    display: flex;
+    flex-direction: column;
+    width: 650px;
+    min-height: 400px;
+    align-items: center;
+    justify-content: center;
     background: #ffffff;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    margin: auto;
+    padding: 0 0 30px 0;
     text-align: center;
     font-family: 'Segoe UI', sans-serif;
+
+}
+
+.confirmation h1 {
+    color: #3d3b3b;
 }
 
 .confirmation p {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 20px;
+    display: inline-block;
+    overflow-wrap: break-word;
+    width: 400px;
+    white-space: normal;
+    font-size: 25px;
+    color: #3d3b3b;
+    margin-bottom: 60px;
+
 }
 
 .buttons {
     display: flex;
+    gap: 1em;
     justify-content: space-around;
 }
 
+.buttons button {
+    width: 200px;
+    height: 70px;
+    font-size: 28px;
+    border-radius: 10px;
+}
+
 .yes {
-    background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.3s ease;
 }
 
 .no {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 8px;
+    background-color: #ffffff;
+    border: 2px solid rgb(184, 182, 182);
+    color: grey;
     font-size: 16px;
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.3s ease;

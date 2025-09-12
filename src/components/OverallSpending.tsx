@@ -35,11 +35,11 @@ const renderCustomizedLabel = (props: any) => {
 };
 
 
+export let COLORS: string[] = []
 
 export function OverallSpending(props: Readonly<OverallSpendingType>) {
     const { categories, transactions, spend, received } = props;
 
-    let COLORS: string[] = []
 
     const pieChartData =
         transactions &&

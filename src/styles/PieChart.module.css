@@ -1,0 +1,95 @@
+.OverallSpending {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin-left: 4em;
+    gap: 2em;
+
+}
+
+.total {
+    display: flex;
+    gap: 2em;
+}
+
+.total span {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 25px;
+    background-color: #fffdfd;
+    border-radius: 10px;
+    padding-left: 1em;
+    flex-grow: 1;
+    height: 5em;
+}
+
+.total span:nth-child(1) {
+    color: rgb(215, 52, 52);
+}
+
+.total span:nth-child(2) {
+    color: #57a387;
+}
+
+.total span:nth-child(3) {
+    color: rgb(30, 44, 154);
+}
+
+.total span:nth-child(3) strong {
+    color: black
+}
+
+.pieChart {
+    background-color: #fffdfd;
+    border-radius: 5px;
+
+}
+
+.input-date {
+    max-width: 640px;
+    background-color: #eee;
+    padding: 7px;
+    position: relative;
+}
+
+.headline {
+    background-color: #eee;
+    text-align: center;
+    padding-bottom: 6px;
+}
+
+.dataPicket {
+    max-width: 550px;
+    background-color: #eee;
+    height: 80px;
+    padding: 10px 0 10px 0;
+}
+
+.dataPicket label {
+    float: left;
+    padding: 0 5px 0 5px;
+    background-color: #bbb;
+    width: 85px;
+    margin: 2px 10px 0 10px;
+    height: 20px;
+    font-weight: bold;
+}
+
+.dataPicket button {
+    float: right;
+    margin: 35px 10px 10px 10px;
+}
+
+
+.summary {
+    float: left;
+}
+
+.summary span:first-child {
+    margin-left: 0;
+}
+
+.summary span {
+    margin-left: 50px;
+}
