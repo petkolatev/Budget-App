@@ -1,6 +1,6 @@
 .dashboard {
     display: flex;
-    background-color:#eee;
+    background-color: #eee;
     width: 100%;
     gap: 1em;
 
@@ -13,6 +13,8 @@
     background-color: #f4f9fc;
     border-radius: 5px;
 }
+
+
 
 .categories {
     display: flex;
@@ -50,6 +52,7 @@
     text-align: center;
     font-family: 'Segoe UI', sans-serif;
 }
+
 .PopUp h2 {
     font-size: 2.5em;
     margin: 1em;
@@ -121,4 +124,45 @@
 .merchants {
     border-radius: 5px;
     padding: 0.3em;
+}
+
+.uploadFile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    right:20px;
+    bottom: 20px;
+    z-index: 999;
+    width: 90vh;
+    max-width: 300px;
+    height: auto;
+    border-radius: 25px;
+    border: 1px solid #d8dde7 !important;
+    background-color: rgba(177, 187, 204, 0.5);
+}
+.uploadFile .icon{
+    font-size: 90px;
+    margin-top: 15px;
+}
+
+.uploadFile .buttons {
+    display: flex;
+    gap: 2em;
+    margin-bottom: 15px;
+}
+
+.buttons button {
+    width: 5em;
+    height: 2em;
+    border: none !important;
+    background-color: #5477a7;
+    font-size: 25px;
+    border-radius: 15px;
+}
+
+.buttons button:nth-child(1){
+    color: #3d3b3b;
+    background-color: #f1f1f2 ;
 }

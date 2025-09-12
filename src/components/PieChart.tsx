@@ -66,7 +66,7 @@ export function RenderPieChart(props: Readonly<OverallSpendingType>) {
             .filter((val) => val.value !== 0);
 
     hexColors.map((el) => {
-        rbgaColors.push(hexToRgba(el, 0.3))
+        rbgaColors.push(hexToRgba(el, 0.2))
     })
     mostSpendedCategory = pieChartData?.reduce((prev, current) => current.value > prev.value ? current : prev)
 
@@ -104,6 +104,32 @@ export function RenderPieChart(props: Readonly<OverallSpendingType>) {
                     <Tooltip />
                 </PieChart>
             </ResponsiveContainer>
+            <table className={styles.table}>
+                <thead className={styles.thead}>
+                    <tr>
+                        <th>Категория</th>
+                        <th>Разходи</th>
+                        <th>% Разходи</th>
+                    </tr>
+                </thead>
+                <tbody className={styles.tbody}>
+                    {transactions &&
+                        categories.map(([categoryName], index) => {
+                            const categoryTransactions = getCategoryTransactions(categoryName, transactions);
+                            const categorySpend = getCategoryAmount(categoryTransactions, 'debit');
+                            const percentage = Math.round((categorySpend / spend!) * 100);
+                            return (
+                                percentage !== 0 && (
+                                    <tr key={index}>
+                                        <td>{categoryName}</td>
+                                        <td>{categorySpend.toFixed(0)}</td>
+                                        <td>{percentage} %</td>
+                                    </tr>
+                                )
+                            );
+                        })}
+                </tbody>
+            </table>
         </div>
     );
 }

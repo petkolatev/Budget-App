@@ -9,6 +9,9 @@ import styles from '../styles/Dashboard.module.css'
 import { rbgaColors, hexColors } from '../components/PieChart'
 import Modal from "@/components/Modal"
 import { useToast } from "@/context/ToastContext"
+import { icon } from "@fortawesome/fontawesome-svg-core"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons"
 
 export default function dashboard() {
     const { categories, reloadCategories } = useDataContext();
@@ -80,7 +83,7 @@ export default function dashboard() {
 
     return (
         <div>
-            <button onClick={() => openFileSelector()}>Избери Файл</button>
+
             <div className={styles.dashboard}>
                 <div className={styles.pieChart}>
                     {state.length !== 0 && (
@@ -90,55 +93,70 @@ export default function dashboard() {
                             received={received}
                             categories={categories}
                         />
+                        
                     )}
                 </div>
-                {state.length !== 0 && (
-                    <div className={styles.categories}>
-                        <h1>Категории и търговци</h1>
-                        <div className={styles.create}>
-                            <button
-                                onClick={() => {
-                                    setShowCategoryModal(true);
-                                    setName('');
-                                }}
-                            >
-                                Добави категория
-                            </button>
 
-                            <button
-                                className={styles.addMerchant}
-                                onClick={() => {
-                                    setShowMerchantModal(true);
+                <div>
+                    {state.length !== 0 && (
+                        <div className={styles.categories}>
+                            <h1>Категории и търговци</h1>
+                            <div className={styles.create}>
+                                <button
+                                    onClick={() => {
+                                        setShowCategoryModal(true);
+                                        setName('');
+                                    }}
+                                >
+                                    Добави категория
+                                </button>
 
-                                }}
-                            >
-                                Добави търговец
-                            </button>
-                        </div>
-                        {categories.map((group, index) => {
-                            const [categoryName, ...merchants] = group;
+                                <button
+                                    className={styles.addMerchant}
+                                    onClick={() => {
+                                        setShowMerchantModal(true);
 
-                            return (
-                                <div key={categoryName} className={styles.category}>
-                                    <h2>{categoryName}</h2>
-                                    <ul className={styles.merchantGroup}>
-                                        {merchants.map((merchant) => (
-                                            <span key={merchant}>
-                                                <span
-                                                    style={{ backgroundColor: rbgaColors[index], color: colors[index] }}
-                                                    className={styles.merchants}
-                                                >
-                                                    {merchant}
+                                    }}
+                                >
+                                    Добави търговец
+                                </button>
+                            </div>
+                            {categories.map((group, index) => {
+                                const [categoryName, ...merchants] = group;
+
+                                return (
+                                    <div key={categoryName} className={styles.category}>
+                                        <h2>{categoryName}</h2>
+                                        <ul className={styles.merchantGroup}>
+                                            {merchants.map((merchant) => (
+                                                <span key={merchant}>
+                                                    <span
+                                                        style={{ backgroundColor: rbgaColors[index], color: colors[index] }}
+                                                        className={styles.merchants}
+                                                    >
+                                                        {merchant}
+                                                    </span>
                                                 </span>
-                                            </span>
-                                        ))}
-                                    </ul>
-                                </div>
-                            );
-                        })}
-                    </div>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                );
+                            })}
 
-                )}
+                        </div>
+
+                    )}
+                </div>
+
+                <div className={styles.uploadFile}>
+                    <FontAwesomeIcon className={styles.icon} icon={faCloudArrowUp} size="2xl" style={{ color: "#eff1f5", }} />
+                    <h2>Избор на файлове</h2>
+                    <div className={styles.buttons}>
+                        <button>Отказ</button>
+                        <button onClick={() => openFileSelector()}>Качване</button>
+                    </div>
+                </div>
+
             </div>
 
             <Modal isOpen={showMerchantModal} onClose={() => setShowMerchantModal(false)}>
@@ -206,6 +224,7 @@ export default function dashboard() {
                     </div>
                 </form>
             </Modal>
+
         </div>
 
     )

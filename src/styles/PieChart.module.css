@@ -46,6 +46,54 @@
 
 }
 
+.table {
+    margin: 6px 0px 6px 0px;
+    empty-cells: show;
+    background-color: #fffdfd;
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 25px;
+}
+
+.table caption {
+    margin: 0px 7px;
+    text-align: left;
+}
+.thead{
+    border-radius: 15px;
+
+}
+
+.thead th,
+.thead td {
+    padding: 14px 7px 14px 7px;
+    white-space: nowrap;
+    border: 2px solid #f4f9fc;
+    font-size: 25px;
+}
+
+.tbody td {
+    padding: 14px 7px 14px 7px;
+    white-space: nowrap;
+    border: 2px solid#f4f9fc;
+    text-align: left;
+    font-size: 20px;
+}
+
+tfoot th.highlight,
+thead th.highlight {
+    background-color: #fbbc01;
+}
+
+tfoot th.highlight {
+    text-align: right;
+}
+
+tbody td.highlight {
+    background-color: #ffe8a6;
+    text-align: right;
+}
+
 .input-date {
     max-width: 640px;
     background-color: #eee;
