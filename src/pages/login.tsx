@@ -22,7 +22,7 @@ export default function LoginForm() {
         })
 
         if (res?.ok) {
-            router.push('/')
+            router.push('/dashboard')
         } else {
             showToast('Wrong email or password', 'error')
         }

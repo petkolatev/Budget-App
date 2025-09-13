@@ -12,6 +12,7 @@ import { useToast } from "@/context/ToastContext"
 import { icon } from "@fortawesome/fontawesome-svg-core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons"
+import Navbar from "@/components/navbar"
 
 export default function dashboard() {
     const { categories, reloadCategories } = useDataContext();
@@ -83,7 +84,6 @@ export default function dashboard() {
 
     return (
         <div>
-
             <div className={styles.dashboard}>
                 <div className={styles.pieChart}>
                     {state.length !== 0 && (
@@ -93,7 +93,7 @@ export default function dashboard() {
                             received={received}
                             categories={categories}
                         />
-                        
+
                     )}
                 </div>
 

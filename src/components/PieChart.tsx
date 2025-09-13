@@ -8,6 +8,9 @@ import {
     Tooltip,
     ResponsiveContainer,
 } from 'recharts';
+import Navbar from './navbar';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 const renderCustomizedLabel = (props: any) => {
     const RADIAN = Math.PI / 180;
@@ -47,6 +50,7 @@ export let rbgaColors: string[] = []
 export let hexColors: string[] = []
 
 export function RenderPieChart(props: Readonly<OverallSpendingType>) {
+    const { data: session, status } = useSession()
     const { categories, transactions, spend, received } = props;
     let mostSpendedCategory: { name: string, value: number } | undefined
 
@@ -72,7 +76,19 @@ export function RenderPieChart(props: Readonly<OverallSpendingType>) {
 
     return (
         <div className={styles.OverallSpending}>
-            <h1 className={styles.tableTitle}>Месечен бюджет</h1>
+            <div className={styles.navigation}>
+                <h1 className={styles.tableTitle}>Месечен бюджет</h1>
+                <div className={styles.buttons}>
+                    <Link href='/'>Home</Link>
+                    {status === 'authenticated' && (
+                        <>
+                            <Link href='/createCategory'>Category</Link>
+                            <Link href='/dashboard'>Dashboard</Link>
+
+                        </>
+                    )}
+                </div>
+            </div>
             <div className={styles.total}>
                 <span>
                     Общо разходи <strong>{spend?.toFixed(0)}</strong>

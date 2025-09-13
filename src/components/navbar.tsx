@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 
 export default function Navbar() {
@@ -17,19 +17,23 @@ export default function Navbar() {
                 <b>BUDGET</b>
             </div>
             <div className="buttons">
-                <Link href='/'>Home</Link>
-                {status === 'unauthenticated' && (
-                    <>
-                        <Link href='/login'>Login</Link>
-                        <Link href='/signUp'>Sign Up</Link>
-                    </>
-
-                )}
                 {status === 'authenticated' && (
                     <>
-                        <Link href='/createCategory'>Category</Link>
+                        {/* <Link href='/createCategory'>Category</Link>
                         <Link href='/dashboard'>Dashboard</Link>
+                        <div>
+                            {session ?
+                                <div>
+                                    <button onClick={() => {
+                                        signOut({ callbackUrl: '/login' })
+                                    }}>
+                                        Logout
+                                    </button>
+                                </div >
+                                : ''
+                            }
 
+                        </div> */}
                     </>
                 )}
             </div>

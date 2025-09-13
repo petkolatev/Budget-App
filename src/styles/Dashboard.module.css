@@ -1,6 +1,6 @@
 .dashboard {
     display: flex;
-    background-color: #eee;
+    background-color: #f2f6fc;
     width: 100%;
     gap: 1em;
 
@@ -10,7 +10,7 @@
 
 .pieChart {
     min-width: 60%;
-    background-color: #f4f9fc;
+    background-color: #f5fafd;
     border-radius: 5px;
 }
 
@@ -132,7 +132,7 @@
     align-items: center;
     justify-content: space-between;
     position: fixed;
-    right:20px;
+    right: 20px;
     bottom: 20px;
     z-index: 999;
     width: 90vh;
@@ -142,7 +142,8 @@
     border: 1px solid #d8dde7 !important;
     background-color: rgba(177, 187, 204, 0.5);
 }
-.uploadFile .icon{
+
+.uploadFile .icon {
     font-size: 90px;
     margin-top: 15px;
 }
@@ -162,7 +163,7 @@
     border-radius: 15px;
 }
 
-.buttons button:nth-child(1){
+.buttons button:nth-child(1) {
     color: #3d3b3b;
-    background-color: #f1f1f2 ;
+    background-color: #f1f1f2;
 }

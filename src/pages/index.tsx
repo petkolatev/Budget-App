@@ -21,19 +21,12 @@ export default function Home() {
         <div>
             {session ?
                 <div>
-                    <p>Welcome, {session?.user?.name}</p>
-                    <button onClick={() => {
-                        signOut({ callbackUrl: '/login' })
-                    }}>
-                        Logout
-                    </button>
                     <div className="App">
-                        <Budget />
+                        {/* <Budget /> */}
                     </div>
                 </div >
                 : ''
             }
-
         </div>
     )
 }

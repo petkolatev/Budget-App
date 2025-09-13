@@ -1,7 +1,7 @@
 .login {
     display: flex;
     flex-direction: column;
-    background-color: #eee;
+    background-color: #f2f6fc;
     padding: 30px 0;
     width: 25%;
     align-items: center;
@@ -38,7 +38,6 @@
     text-decoration: none;
     color: #11316b;
     font-weight: 700;
-
 }
 
 .login input {

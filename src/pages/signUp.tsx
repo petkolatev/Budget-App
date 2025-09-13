@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from '../styles/SignUp.module.css'
 import { useRouter } from 'next/router';
 import { useToast } from '@/context/ToastContext';
+import Link from 'next/link';
 
 export default function signUp() {
     const router = useRouter()
@@ -40,6 +41,7 @@ export default function signUp() {
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                     <input type="password" value={rePassword} onChange={(e) => setRePassword(e.target.value)} placeholder="RePassword" />
                     <button type="submit">Submit</button>
+                    <span>Already have an account? <Link href='/login'>Login</Link></span>
                 </form>
             </div>
         </div>

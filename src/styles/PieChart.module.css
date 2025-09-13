@@ -7,6 +7,30 @@
 
 }
 
+.navigation {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tableTitle {
+    flex-grow: 4;
+}
+
+.buttons {
+    display: flex;
+    gap: 2em;
+}
+
+.buttons a {
+    background-color: #f2f6fc;
+    color: black;
+    font-size: 22px;
+    padding: 0.3em 0.5em;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
 .total {
     display: flex;
     gap: 2em;
@@ -41,7 +65,7 @@
 }
 
 .pieChart {
-    background-color: #fffdfd;
+    background-color:#f6fafd;
     border-radius: 5px;
 
 }
@@ -59,7 +83,8 @@
     margin: 0px 7px;
     text-align: left;
 }
-.thead{
+
+.thead {
     border-radius: 15px;
 
 }
