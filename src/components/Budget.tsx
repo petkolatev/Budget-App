@@ -3,8 +3,8 @@ import styles from '../styles/Budget.module.css'
 import { parse, getCategoryTransactions, getCategoryAmount } from '../lib/BudgetParser';
 import { Key, useEffect, useState } from 'react';
 import { selectReceived, selectSpend } from '../lib/budgetSlice';
-import { OverallSpending } from '../components/OverallSpending';
-import { TransactionTable } from '../components/TransactionTable';
+import { OverallSpending } from './OverallSpending';
+import { TransactionTable } from './TransactionTable';
 import { Transaction } from '@/types/types';
 import { useDataContext } from '@/context/CategoryContext';
 

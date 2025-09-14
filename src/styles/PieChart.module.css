@@ -22,14 +22,6 @@
     gap: 2em;
 }
 
-.buttons a {
-    background-color: #f2f6fc;
-    color: black;
-    font-size: 22px;
-    padding: 0.3em 0.5em;
-    border-radius: 10px;
-    text-decoration: none;
-}
 
 .total {
     display: flex;

@@ -6,15 +6,13 @@ import { useFilePicker } from "use-file-picker"
 import { parse } from "@/lib/BudgetParser"
 import { RenderPieChart } from "@/components/PieChart"
 import styles from '../styles/Dashboard.module.css'
-import { rbgaColors, hexColors } from '../components/PieChart'
+import { rbgaColors, hexColors } from './PieChart'
 import Modal from "@/components/Modal"
 import { useToast } from "@/context/ToastContext"
-import { icon } from "@fortawesome/fontawesome-svg-core"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons"
-import Navbar from "@/components/navbar"
 
-export default function dashboard() {
+export default function ashboard() {
     const { categories, reloadCategories } = useDataContext();
     const [state, setState] = useState<Transaction[]>([])
     const [colors, setColors] = useState<string[]>([])
@@ -144,7 +142,6 @@ export default function dashboard() {
                             })}
 
                         </div>
-
                     )}
                 </div>
 

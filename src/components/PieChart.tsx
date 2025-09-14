@@ -76,19 +76,7 @@ export function RenderPieChart(props: Readonly<OverallSpendingType>) {
 
     return (
         <div className={styles.OverallSpending}>
-            <div className={styles.navigation}>
-                <h1 className={styles.tableTitle}>Месечен бюджет</h1>
-                <div className={styles.buttons}>
-                    <Link href='/'>Home</Link>
-                    {status === 'authenticated' && (
-                        <>
-                            <Link href='/createCategory'>Category</Link>
-                            <Link href='/dashboard'>Dashboard</Link>
-
-                        </>
-                    )}
-                </div>
-            </div>
+            <h1 className={styles.tableTitle}>Месечен бюджет</h1>
             <div className={styles.total}>
                 <span>
                     Общо разходи <strong>{spend?.toFixed(0)}</strong>

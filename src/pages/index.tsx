@@ -1,8 +1,9 @@
 import { signOut, useSession } from 'next-auth/react'
-import Budget from "./Budget";
+import Budget from "../components/Budget";
 import { useDataContext } from '@/context/CategoryContext';
 import { useToast } from '@/context/ToastContext';
 import { useEffect } from 'react';
+import Dashboard from '@/components/Dashboard';
 
 
 export default function Home() {
@@ -22,7 +23,7 @@ export default function Home() {
             {session ?
                 <div>
                     <div className="App">
-                        {/* <Budget /> */}
+                        <Dashboard />
                     </div>
                 </div >
                 : ''

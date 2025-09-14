@@ -5,7 +5,7 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color:  #f2f6fc;
+    background-color: #f2f6fc;
 }
 
 code {
@@ -103,7 +103,7 @@ button:active {
     display: flex;
     justify-content: space-between;
     padding: 0 5em;
-    background-color:  #f2f6fc;
+    background-color: #f2f6fc;
 }
 
 .navbar .icon {
@@ -126,28 +126,30 @@ button:active {
 .buttons {
     display: flex;
     gap: 1rem;
-    /* margin: 0 5em; */
     padding: 8px;
-
 }
 
 
 
 .buttons a,
 .buttons button {
-    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fffdfd;;
+    color: black;
+    width: 8rem;
+    height: 2rem;
+    font-size: 22px;
+    padding: 0.3em 0.5em;
     border-radius: 5px;
-    background: #003781;
-    font-size: 33px;
-    width: 180px;
-    border: 1px solid #003781;
-    text-align: center;
-    padding: 3px 10px;
-    color: #eee;
-    cursor: pointer;
+    text-decoration: none;
+
+
 }
 
 .buttons button {
-    width: 200px;
-    height: 60px;
+    width: 8rem;
+    height:2.8rem;
+    border: none;
 }

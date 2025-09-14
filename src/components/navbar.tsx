@@ -19,21 +19,17 @@ export default function Navbar() {
             <div className="buttons">
                 {status === 'authenticated' && (
                     <>
-                        {/* <Link href='/createCategory'>Category</Link>
-                        <Link href='/dashboard'>Dashboard</Link>
-                        <div>
-                            {session ?
-                                <div>
-                                    <button onClick={() => {
-                                        signOut({ callbackUrl: '/login' })
-                                    }}>
-                                        Logout
-                                    </button>
-                                </div >
-                                : ''
-                            }
+                        <Link href='/'>Home</Link>
+                        <Link href='/categories'>Category</Link>
 
-                        </div> */}
+                        <button onClick={() => {
+                            signOut({ callbackUrl: '/login' })
+                        }}>
+                            Logout
+                        </button>
+
+                        <Link href='/userProfile'>{session.user?.name}</Link>
+
                     </>
                 )}
             </div>
