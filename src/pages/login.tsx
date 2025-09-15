@@ -6,25 +6,35 @@ import Link from 'next/link';
 import { useToast } from '@/context/ToastContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import Preloader from '@/components/Preloader';
 
 export default function LoginForm() {
     const router = useRouter()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState<boolean>(false)
     const { showToast } = useToast()
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        const res = await signIn('credentials', {
-            redirect: false,
-            email,
-            password,
-        })
+        setLoading(true)
+        try {
 
-        if (res?.ok) {
-            router.push('/dashboard')
-        } else {
-            showToast('Wrong email or password', 'error')
+            const res = await signIn('credentials', {
+                redirect: false,
+                email,
+                password,
+            })
+
+            if (res?.ok) {
+                router.push('/')
+            } else {
+                showToast('Wrong email or password', 'error')
+            }
+        } catch (error) {
+            showToast(`Error: ${error}`, 'error');
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -64,6 +74,8 @@ export default function LoginForm() {
                     <span>Don't have an account? <Link href='/signUp'>Sign Up</Link></span>
                 </form>
             </div>
+
+            {loading && <Preloader />}
         </div>
     );
 }

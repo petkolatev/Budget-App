@@ -3,6 +3,8 @@ import styles from '../styles/Category.module.css';
 import { useState, FormEvent } from 'react';
 import Modal from '@/components/Modal';
 import { useToast } from '@/context/ToastContext';
+import PageLoader from 'next/dist/client/page-loader';
+import Preloader from '@/components/Preloader';
 
 export default function CreateCategoryPage() {
     const [showMerchantModal, setShowMerchantModal] = useState(false);
@@ -12,66 +14,92 @@ export default function CreateCategoryPage() {
     const [merchantName, setMerchantName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const { categories, reloadCategories } = useDataContext();
+    const [loading, setLoading] = useState<boolean>(false);
     const { showToast } = useToast()
 
     const handleCategorySubmit = async (e: FormEvent) => {
         e.preventDefault();
-        const res = await fetch('/api/createCategories', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name }),
-        });
+        setLoading(true)
 
-        const data = await res.json();
-        if (data.success) {
-            showToast(data.message, 'success')
-            setName('');
-            reloadCategories();
-            setShowCategoryModal(false);
-        } else {
-            showToast(`Error: ${data.error}`, 'error')
+        try {
 
+            const res = await fetch('/api/createCategories', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name }),
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                showToast(data.message, 'success')
+                setName('');
+                reloadCategories();
+                setShowCategoryModal(false);
+            } else {
+                showToast(`Error: ${data.error}`, 'error')
+
+            }
+        } catch (error) {
+            showToast(`Error: ${error}`, 'error')
+        } finally {
+            setLoading(false)
         }
     };
 
     const handleMerchantSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        const res = await fetch('/api/createMerchants', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, merchantName, description }),
-        });
+        setLoading(true)
+        try {
 
-        const data = await res.json();
-        if (data.success) {
-            showToast(data.message, 'success')
-            setName('')
-            setMerchantName('');
-            setDescription('');
-            setShowMerchantModal(false);
-            reloadCategories();
-        } else {
-            showToast(`Error: ${data.error}`, 'error')
+            const res = await fetch('/api/createMerchants', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, merchantName, description }),
+            });
 
+            const data = await res.json();
+            if (data.success) {
+                showToast(data.message, 'success')
+                setName('')
+                setMerchantName('');
+                setDescription('');
+                setShowMerchantModal(false);
+                reloadCategories();
+            } else {
+                showToast(`Error: ${data.error}`, 'error')
+            }
+
+        } catch (error) {
+            showToast(`Error: ${error}`, 'error')
+        } finally {
+            setLoading(false)
         }
     };
 
     const handleDeleteCategory = async (categoryName: string) => {
         showConfirmation(`Сигурен ли си, че искаш да изтриеш ${categoryName}?`, async () => {
-            const res = await fetch('/api/deleteCategory', {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ categoryName }),
-            });
+            setLoading(true)
+            try {
 
-            const data = await res.json();
-            if (res.status === 200) {
-                showToast(data.message, 'success');
-                reloadCategories();
-            } else {
-                showToast(`Error: ${data.error}`, 'error');
+                const res = await fetch('/api/deleteCategory', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ categoryName }),
+                });
+
+                const data = await res.json();
+                if (res.status === 200) {
+                    showToast(data.message, 'success');
+                    reloadCategories();
+                } else {
+                    showToast(`Error: ${data.error}`, 'error');
+                }
+                setConfirmModal(null);
+            } catch (error) {
+                showToast(`Error: ${error}`, 'error');
+            } finally {
+                setLoading(false)
             }
-            setConfirmModal(null);
         });
 
 
@@ -79,43 +107,59 @@ export default function CreateCategoryPage() {
 
     const deleteAllMerchantsFromCategory = (categoryName: string) => {
         showConfirmation(`Сигурен ли си, че искаш да изтриеш всички търговци от ${categoryName}?`, async () => {
-            const res = await fetch('/api/deleteAllMerchantsFromCategory', {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ categoryName }),
-            });
+            setLoading(true)
+            try {
 
-            const data = await res.json();
+                const res = await fetch('/api/deleteAllMerchantsFromCategory', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ categoryName }),
+                });
 
-            if (res.status === 200) {
-                showToast(data.message, 'success');
-                reloadCategories();
-            } else {
-                showToast(`Error: ${data.error}`, 'error');
+                const data = await res.json();
+
+                if (res.status === 200) {
+                    showToast(data.message, 'success');
+                    reloadCategories();
+                } else {
+                    showToast(`Error: ${data.error}`, 'error');
+                }
+
+                setConfirmModal(null);
+            } catch (error) {
+                showToast(`Error: ${error}`, 'error');
+            } finally {
+                setLoading(false)
             }
-
-            setConfirmModal(null);
         });
     };
 
     const handleDeleteMerchant = (merchantName: string) => {
         showConfirmation(`Сигурен ли си, че искаш да изтриеш ${merchantName}?`, async () => {
-            const res = await fetch('/api/deleteMerchant', {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ merchantName }),
-            });
+            setLoading(true)
+            try {
 
-            const data = await res.json();
+                const res = await fetch('/api/deleteMerchant', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ merchantName }),
+                });
 
-            if (res.status === 200) {
-                showToast(data.message, 'success');
-                reloadCategories();
-            } else {
-                showToast(`Error: ${data.error}`, 'error');
+                const data = await res.json();
+
+                if (res.status === 200) {
+                    showToast(data.message, 'success');
+                    reloadCategories();
+                } else {
+                    showToast(`Error: ${data.error}`, 'error');
+                }
+
+                setConfirmModal(null);
+            } catch (error) {
+                showToast(`Error: ${error}`, 'error');
+            } finally {
+                setLoading(false)
             }
-
-            setConfirmModal(null);
         });
     };
 
@@ -252,6 +296,7 @@ export default function CreateCategoryPage() {
                 </form>
             </Modal>
 
+            {loading && <Preloader />}
 
             {confirmModal?.open && (
                 <Modal isOpen={true} onClose={() => setConfirmModal(null)}>

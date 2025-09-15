@@ -3,6 +3,7 @@ import styles from '../styles/SignUp.module.css'
 import { useRouter } from 'next/router';
 import { useToast } from '@/context/ToastContext';
 import Link from 'next/link';
+import Preloader from '@/components/Preloader';
 
 export default function signUp() {
     const router = useRouter()
@@ -10,23 +11,32 @@ export default function signUp() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
+    const [loading, setLoading] = useState<boolean>(false)
     const { showToast } = useToast()
 
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (password !== rePassword) {
-            return showToast('Password miss match', 'error')
-        }
-        const res = await fetch('/api/signUp', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password, rePassword }),
-        });
-        const data = await res.json();
-        if (res.ok) {
-            router.push('/login')
-        } else {
-            return showToast(`Error: ${data.error}`, 'error')
+        setLoading(true)
+        try {
+
+            if (password !== rePassword) {
+                return showToast('Password miss match', 'error')
+            }
+            const res = await fetch('/api/signUp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password, rePassword }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                router.push('/login')
+            } else {
+                return showToast(`Error: ${data.error}`, 'error')
+            }
+        } catch (error) {
+            showToast(`Error: ${error}`, 'error');
+        } finally {
+            setLoading(false)
         }
 
 
@@ -44,6 +54,9 @@ export default function signUp() {
                     <span>Already have an account? <Link href='/login'>Login</Link></span>
                 </form>
             </div>
+
+            {loading && <Preloader />}
+
         </div>
     )
 }
