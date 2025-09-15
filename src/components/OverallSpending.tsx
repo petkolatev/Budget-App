@@ -12,7 +12,7 @@ import {
 const renderCustomizedLabel = (props: any) => {
     const RADIAN = Math.PI / 180;
     const {
-        cx, cy, midAngle, innerRadius, outerRadius, percent, name,
+        cx, cy, midAngle, outerRadius, percent, name,
     } = props;
 
     const radius = outerRadius + 30;
@@ -35,7 +35,7 @@ const renderCustomizedLabel = (props: any) => {
 };
 
 
-export let COLORS: string[] = []
+export const COLORS: string[] = []
 
 export function OverallSpending(props: Readonly<OverallSpendingType>) {
     const { categories, transactions, spend, received } = props;

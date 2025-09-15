@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import mongoose, { Types } from "mongoose";
 import connectDB from "@/lib/mongodb";
 import { Category, CategoryType, Merchant, MerchantType } from "@/types/Category";
 

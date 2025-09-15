@@ -33,7 +33,7 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
             setCategories(formattedCategories);
             setError(null);
         } catch (err: any) {
-            setError('Fail to fetch data');
+            setError(err);
         }
     };
 

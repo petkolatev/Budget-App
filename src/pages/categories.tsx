@@ -3,7 +3,6 @@ import styles from '../styles/Category.module.css';
 import { useState, FormEvent } from 'react';
 import Modal from '@/components/Modal';
 import { useToast } from '@/context/ToastContext';
-import PageLoader from 'next/dist/client/page-loader';
 import Preloader from '@/components/Preloader';
 
 export default function CreateCategoryPage() {

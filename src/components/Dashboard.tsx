@@ -12,7 +12,7 @@ import { useToast } from "@/context/ToastContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons"
 
-export default function ashboard() {
+export default function Dashboard() {
     const { categories, reloadCategories } = useDataContext();
     const [state, setState] = useState<Transaction[]>([])
     const [colors, setColors] = useState<string[]>([])
@@ -78,7 +78,7 @@ export default function ashboard() {
 
         }
 
-    }, [filesContent, colors])
+    }, [filesContent, categories, colors])
 
     return (
         <div>

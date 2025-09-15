@@ -5,7 +5,7 @@ import { useToast } from '@/context/ToastContext';
 import Link from 'next/link';
 import Preloader from '@/components/Preloader';
 
-export default function signUp() {
+export default function SignUp() {
     const router = useRouter()
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');

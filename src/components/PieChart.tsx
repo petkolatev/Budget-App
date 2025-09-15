@@ -8,14 +8,11 @@ import {
     Tooltip,
     ResponsiveContainer,
 } from 'recharts';
-import Navbar from './navbar';
-import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 
 const renderCustomizedLabel = (props: any) => {
     const RADIAN = Math.PI / 180;
     const {
-        cx, cy, midAngle, innerRadius, outerRadius, percent, name,
+        cx, cy, midAngle, outerRadius, percent, name,
     } = props;
 
     const radius = outerRadius + 30;
@@ -46,14 +43,11 @@ const hexToRgba = ((hex: string, opacity: number) => {
 })
 
 
-export let rbgaColors: string[] = []
-export let hexColors: string[] = []
+export const rbgaColors: string[] = []
+export const hexColors: string[] = []
 
 export function RenderPieChart(props: Readonly<OverallSpendingType>) {
-    const { data: session, status } = useSession()
     const { categories, transactions, spend, received } = props;
-    let mostSpendedCategory: { name: string, value: number } | undefined
-
 
     const pieChartData =
         transactions &&
@@ -72,7 +66,7 @@ export function RenderPieChart(props: Readonly<OverallSpendingType>) {
     hexColors.map((el) => {
         rbgaColors.push(hexToRgba(el, 0.2))
     })
-    mostSpendedCategory = pieChartData?.reduce((prev, current) => current.value > prev.value ? current : prev)
+     const mostSpendedCategory = pieChartData?.reduce((prev, current) => current.value > prev.value ? current : prev)
 
     return (
         <div className={styles.OverallSpending}>

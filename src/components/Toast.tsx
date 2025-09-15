@@ -1,4 +1,5 @@
 import styles from '../styles/Toast.module.css';
+import Image from 'next/image';
 
 
 interface ToastProps {
@@ -12,10 +13,20 @@ export default function Toast({ message, type, onClose }: ToastProps) {
         <div className={`${styles.toast} ${styles[type]}`}>
 
             {type === 'success' && (
-                <img src="/images/success.png" />
+                <Image
+                    src="/images/success.png"
+                    alt="Successful"
+                    width={64}
+                    height={64}
+                />
             )}
             {type === 'error' && (
-                <img src="/images/error.png" />
+                <Image
+                    src="/images/error.png"
+                    alt="Error"
+                    width={64}
+                    height={64}
+                />
             )}
             <span>{message}</span>
             <button onClick={onClose}>X</button>
