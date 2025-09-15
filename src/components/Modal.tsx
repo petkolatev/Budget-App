@@ -15,9 +15,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     return (
         <div className={styles.overlay}>
             <div className={styles.modal}>
-            <button style={{ backgroundColor: '#ffffff'}} className={styles.closeBtn} onClick={onClose}><FontAwesomeIcon icon={faXmark}/></button>
-
-
+                <button style={{ backgroundColor: '#ffffff' }}
+                    className={styles.closeBtn}
+                    onClick={onClose}><FontAwesomeIcon icon={faXmark} />
+                </button>
                 {children}
             </div>
         </div>

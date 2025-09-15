@@ -8,6 +8,7 @@ import {
     Tooltip,
     ResponsiveContainer,
 } from 'recharts';
+import { hexToRgba } from '@/utils/StyleUtil';
 
 const renderCustomizedLabel = (props: any) => {
     const RADIAN = Math.PI / 180;
@@ -33,14 +34,6 @@ const renderCustomizedLabel = (props: any) => {
         </text>
     );
 };
-
-const hexToRgba = ((hex: string, opacity: number) => {
-    const bigint = parseInt(hex.replace('#', ''), 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-})
 
 
 export const rbgaColors: string[] = []
