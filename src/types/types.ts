@@ -6,7 +6,7 @@ export interface Transaction {
     contragent: string,
     reason: string,
     info: string,
-    category: string
+    category: string,
 }
 
 export interface TransactionTableProps {

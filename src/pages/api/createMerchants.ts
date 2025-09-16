@@ -16,7 +16,7 @@ export default async function handler(
     if (req.method === 'POST') {
         const { name, merchantName, description } = req.body;
 
-        if (name && merchantName && description) {
+        if (name && merchantName) {
 
             try {
                 const category = await Category.findOne({ name });

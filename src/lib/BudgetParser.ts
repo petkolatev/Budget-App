@@ -44,7 +44,7 @@ export const parse = (fileContent: string,categories:string[][]) => {
             const reason = lineArr[6]?.trim()
             const info = lineArr[7]?.trim()
             const category = getTransactionCategory(contragent, document, reason, info,categories)
-
+            
             result.push({ date, amount, type, document, contragent, reason, info, category })
         })
     return result

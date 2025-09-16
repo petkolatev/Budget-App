@@ -1,12 +1,12 @@
-import { signOut, useSession } from 'next-auth/react'
-import Budget from "./Budget";
+import { useSession } from 'next-auth/react'
 import { useDataContext } from '@/context/CategoryContext';
 import { useToast } from '@/context/ToastContext';
 import { useEffect } from 'react';
+import Dashboard from '@/components/Dashboard';
 
 
 export default function Home() {
-    const { data: session, status } = useSession()
+    const { data: session } = useSession()
     const { error } = useDataContext()
     const { showToast } = useToast()
 
@@ -15,25 +15,18 @@ export default function Home() {
 
             showToast(error, 'error')
         }
-    }, [error])
+    }, [showToast, error])
 
     return (
         <div>
             {session ?
                 <div>
-                    <p>Welcome, {session?.user?.name}</p>
-                    <button onClick={() => {
-                        signOut({ callbackUrl: '/login' })
-                    }}>
-                        Logout
-                    </button>
                     <div className="App">
-                        <Budget />
+                        <Dashboard />
                     </div>
                 </div >
                 : ''
             }
-
         </div>
     )
 }

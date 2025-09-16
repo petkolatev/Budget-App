@@ -1,4 +1,4 @@
-import styles from '../styles/Budget.module.css';
+import styles from '../styles/PieChart.module.css';
 import { getCategoryAmount, getCategoryTransactions } from '../lib/BudgetParser';
 import { OverallSpendingType } from '@/types/types';
 import {
@@ -8,6 +8,7 @@ import {
     Tooltip,
     ResponsiveContainer,
 } from 'recharts';
+import { hexToRgba } from '@/utils/StyleUtil';
 
 const renderCustomizedLabel = (props: any) => {
     const RADIAN = Math.PI / 180;
@@ -35,11 +36,11 @@ const renderCustomizedLabel = (props: any) => {
 };
 
 
-export const COLORS: string[] = []
+export const rbgaColors: string[] = []
+export const hexColors: string[] = []
 
-export function OverallSpending(props: Readonly<OverallSpendingType>) {
+export function RenderPieChart(props: Readonly<OverallSpendingType>) {
     const { categories, transactions, spend, received } = props;
-
 
     const pieChartData =
         transactions &&
@@ -47,7 +48,7 @@ export function OverallSpending(props: Readonly<OverallSpendingType>) {
             .map(([categoryName]) => {
                 const categoryTransactions = getCategoryTransactions(categoryName, transactions);
                 const categorySpend = getCategoryAmount(categoryTransactions, 'debit');
-                COLORS.push('#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6))
+                hexColors.push('#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6))
                 return {
                     name: categoryName,
                     value: categorySpend,
@@ -55,19 +56,27 @@ export function OverallSpending(props: Readonly<OverallSpendingType>) {
             })
             .filter((val) => val.value !== 0);
 
+    hexColors.map((el) => {
+        rbgaColors.push(hexToRgba(el, 0.2))
+    })
+     const mostSpendedCategory = pieChartData?.reduce((prev, current) => current.value > prev.value ? current : prev)
+
     return (
         <div className={styles.OverallSpending}>
-            <div className={styles.tableTitle}>Разходи</div>
-            <div className="total">
+            <h1 className={styles.tableTitle}>Месечен бюджет</h1>
+            <div className={styles.total}>
                 <span>
-                    Изхарчени: <strong>{spend?.toFixed(0)}</strong>
+                    Общо разходи <strong>{spend?.toFixed(0)}</strong>
                 </span>
                 <span>
-                    Получени: <strong>{received?.toFixed(0)}</strong>
+                    Общо приходи <strong>{received?.toFixed(0)}</strong>
+                </span>
+                <span>
+                    Водеща категория <strong>{mostSpendedCategory?.name}</strong>
                 </span>
             </div>
 
-            <ResponsiveContainer width="100%" height={650}>
+            <ResponsiveContainer className={styles.pieChart} width="100%" height={650}>
                 <PieChart>
                     <Pie
                         data={pieChartData}
@@ -75,25 +84,23 @@ export function OverallSpending(props: Readonly<OverallSpendingType>) {
                         nameKey="name"
                         cx="50%"
                         cy="50%"
-                        outerRadius={260}
+                        outerRadius={200}
                         label={renderCustomizedLabel}
                         labelLine={false}
                     >
                         {pieChartData!.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            <Cell key={`cell-${index}`} fill={hexColors[index % hexColors.length]} />
                         ))}
                     </Pie>
                     <Tooltip />
                 </PieChart>
             </ResponsiveContainer>
-
             <table className={styles.table}>
                 <thead className={styles.thead}>
                     <tr>
                         <th>Категория</th>
-                        <th>Изхарчени</th>
-                        <th>Получени</th>
-                        <th>Процент Разходи</th>
+                        <th>Разходи</th>
+                        <th>% Разходи</th>
                     </tr>
                 </thead>
                 <tbody className={styles.tbody}>
@@ -101,14 +108,12 @@ export function OverallSpending(props: Readonly<OverallSpendingType>) {
                         categories.map(([categoryName], index) => {
                             const categoryTransactions = getCategoryTransactions(categoryName, transactions);
                             const categorySpend = getCategoryAmount(categoryTransactions, 'debit');
-                            const categoryReceived = getCategoryAmount(categoryTransactions, 'credit');
                             const percentage = Math.round((categorySpend / spend!) * 100);
                             return (
                                 percentage !== 0 && (
                                     <tr key={index}>
                                         <td>{categoryName}</td>
                                         <td>{categorySpend.toFixed(0)}</td>
-                                        <td>{categoryReceived.toFixed(0)}</td>
                                         <td>{percentage} %</td>
                                     </tr>
                                 )
@@ -116,8 +121,6 @@ export function OverallSpending(props: Readonly<OverallSpendingType>) {
                         })}
                 </tbody>
             </table>
-
-            <div className={styles.divider}></div>
         </div>
     );
 }

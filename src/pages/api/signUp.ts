@@ -24,6 +24,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const newUser = await User.create({ email, name, password: hashedPassword })
         res.status(201).json({ user: newUser })
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' })
+        res.status(500).json({ error: error })
     }
 }
