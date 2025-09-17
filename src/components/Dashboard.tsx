@@ -80,7 +80,7 @@ export default function Dashboard() {
       setState(newbudget);
       setColors(hexColors);
     }
-  }, [filesContent, categories, colors]);
+  }, [filesContent, categories, colors, setBudget]);
 
   useEffect(() => {
     if (budget.length > 0) {
