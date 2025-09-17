@@ -81,14 +81,14 @@ export default function Dashboard() {
 
         }
 
-    }, [filesContent, categories, colors])
+    }, [filesContent, categories, colors, setBudget])
 
     useEffect(() => {
         if (budget.length > 0) {
             setState(budget)
         }
 
-    }, []);
+    }, [budget]);
 
 
     return (

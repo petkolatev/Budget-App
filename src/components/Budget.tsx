@@ -1,4 +1,4 @@
-import {useFilePicker} from 'use-file-picker'
+import { useFilePicker } from 'use-file-picker'
 import styles from '../styles/Budget.module.css'
 import { parse, getCategoryTransactions, getCategoryAmount } from '../lib/BudgetParser';
 import { Key, useEffect, useState } from 'react';
@@ -29,14 +29,14 @@ export function Budget() {
 
         }
 
-    }, [filesContent, categories])
+    }, [filesContent, categories, setBudget])
 
     useEffect(() => {
         if (budget.length > 0) {
             setState(budget)
         }
 
-    }, []);
+    }, [budget]);
 
     return (
         <div>
