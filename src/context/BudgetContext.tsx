@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useState, useEffect } from 'react';
+import React, { createContext, ReactNode, useContext, useState } from 'react';
 import { Transaction } from '@/types/types';
 
 type BudgetProviderProps = {
