@@ -32,8 +32,13 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
             );
             setCategories(formattedCategories);
             setError(null);
-        } catch (err: any) {
-            setError(err);
+        } catch (error: unknown) {
+            let errorMessage = 'Server error'
+
+            if (error instanceof Error) {
+                errorMessage = error.message
+            }
+            setError(errorMessage);
         }
     };
 

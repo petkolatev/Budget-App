@@ -11,6 +11,7 @@ import Modal from "@/components/Modal"
 import { useToast } from "@/context/ToastContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons"
+import { useBudget } from "@/context/BudgetContext"
 
 export default function Dashboard() {
     const { categories, reloadCategories } = useDataContext();
@@ -27,6 +28,7 @@ export default function Dashboard() {
         readAs: "Text",
         accept: [".txt"]
     });
+    const { budget, setBudget } = useBudget()
     const { showToast } = useToast()
 
     const handleMerchantSubmit = async (e: FormEvent) => {
@@ -72,13 +74,22 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (filesContent[0]?.content) {
-            const budget = parse(filesContent[0].content, categories);
-            setState(budget)
+            const newbudget: Transaction[] = parse(filesContent[0].content, categories);
+            setBudget(newbudget)
+            setState(newbudget)
             setColors(hexColors)
 
         }
 
     }, [filesContent, categories, colors])
+
+    useEffect(() => {
+        if (budget.length > 0) {
+            setState(budget)
+        }
+
+    }, []);
+
 
     return (
         <div>

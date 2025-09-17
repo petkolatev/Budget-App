@@ -9,32 +9,7 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 import { hexToRgba } from '@/utils/StyleUtil';
-
-const renderCustomizedLabel = (props: any) => {
-    const RADIAN = Math.PI / 180;
-    const {
-        cx, cy, midAngle, outerRadius, percent, name,
-    } = props;
-
-    const radius = outerRadius + 30;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-    return (
-        <text
-            x={x}
-            y={y}
-            fill="#333"
-            textAnchor={x > cx ? 'start' : 'end'}
-            dominantBaseline="central"
-            fontSize={12}
-        >
-            {`${name}: ${(percent * 100).toFixed(1)}%`}
-
-        </text>
-    );
-};
-
+import { renderCustomizedLabel } from '@/utils/CustomizeLabel';
 
 export const rbgaColors: string[] = []
 export const hexColors: string[] = []

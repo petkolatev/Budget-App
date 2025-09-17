@@ -32,8 +32,13 @@ export default async function handler(
                 });
                 res.status(200).json({ success: true, message: 'Created new merchant' })
 
-            } catch (error: any) {
-                res.status(500).json({ success: false, error: error.message });
+            } catch (error: unknown) {
+                let errorMessage = 'Server error'
+
+                if (error instanceof Error) {
+                    errorMessage = error.message
+                }
+                res.status(500).json({ success: false, error: errorMessage });
             }
         } else {
             return res.status(400).json({ success: false, error: 'Invalid data' });
