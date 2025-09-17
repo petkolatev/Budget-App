@@ -86,7 +86,7 @@ export default function Dashboard() {
     if (budget.length > 0) {
       setState(budget);
     }
-  }, [budget]);
+  }, []);
 
   return (
     <div>
