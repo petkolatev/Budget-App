@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import connectDB from "@/lib/mongodb";
 import { Category, Merchant } from "@/types/Category";
 import typeErrorMessage from "@/utils/typeErrorMessage";
+import extractErrorCode from "@/utils/extractErrorCode";
 
 type Data =
   | { success: true; message: string }
@@ -39,8 +40,9 @@ export default async function handler(
           .status(200)
           .json({ success: true, message: "Created new merchant" });
       } catch (error: unknown) {
+        const errCode = extractErrorCode(error);
         res
-          .status(500)
+          .status(errCode)
           .json({ success: false, error: typeErrorMessage(error) });
       }
     } else {
