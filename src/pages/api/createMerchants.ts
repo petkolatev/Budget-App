@@ -1,44 +1,54 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import connectDB from '@/lib/mongodb';
-import { Category, Merchant } from '@/types/Category';
-
+import type { NextApiRequest, NextApiResponse } from "next";
+import connectDB from "@/lib/mongodb";
+import { Category, Merchant } from "@/types/Category";
+import typeErrorMessage from "@/utils/typeErrorMessage";
+import extractErrorCode from "@/utils/extractErrorCode";
 
 type Data =
-    | { success: true; message: string }
-    | { success: false; error: string };
+  | { success: true; message: string }
+  | { success: false; error: string };
 
 export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse<Data>
+  req: NextApiRequest,
+  res: NextApiResponse<Data>,
 ) {
-    await connectDB();
+  await connectDB();
 
-    if (req.method === 'POST') {
-        const { name, merchantName, description } = req.body;
+  if (req.method === "POST") {
+    const { name, merchantName, description } = req.body;
 
-        if (name && merchantName) {
+    if (name && merchantName) {
+      try {
+        const category = await Category.findOne({ name });
+        if (!category)
+          return res
+            .status(404)
+            .json({ success: false, error: "Category doesn't exists" });
 
-            try {
-                const category = await Category.findOne({ name });
-                if (!category) return res.status(404).json({ success: false, error: "Category doesn't exists" })
+        const merchant = await Merchant.findOne({ merchantName });
+        if (merchant)
+          return res
+            .status(200)
+            .json({ success: true, message: "Merchant already exists" });
 
-                const merchant = await Merchant.findOne({ merchantName })
-                if (merchant) return res.status(200).json({ success: true, message: 'Merchant already exists' });
-
-                await Merchant.create({
-                    name: merchantName,
-                    description,
-                    categoryId: category._id
-                });
-                res.status(200).json({ success: true, message: 'Created new merchant' })
-
-            } catch (error: any) {
-                res.status(500).json({ success: false, error: error.message });
-            }
-        } else {
-            return res.status(400).json({ success: false, error: 'Invalid data' });
-        }
+        await Merchant.create({
+          name: merchantName,
+          description,
+          categoryId: category._id,
+        });
+        res
+          .status(200)
+          .json({ success: true, message: "Created new merchant" });
+      } catch (error: unknown) {
+        const errCode = extractErrorCode(error);
+        res
+          .status(errCode)
+          .json({ success: false, error: typeErrorMessage(error) });
+      }
     } else {
-        res.status(405).json({ success: false, error: 'Method not allowed' });
+      return res.status(400).json({ success: false, error: "Invalid data" });
     }
+  } else {
+    res.status(405).json({ success: false, error: "Method not allowed" });
+  }
 }

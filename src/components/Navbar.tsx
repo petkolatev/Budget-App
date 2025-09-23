@@ -2,7 +2,7 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Preloader from "./Preloader"; // увери се, че пътят е коректен
+import Preloader from "./Preloader";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -40,6 +40,7 @@ export default function Navbar() {
         {status === "authenticated" && (
           <>
             <Link href="/">Home</Link>
+            <Link href="/extendedBudget">Budget</Link>
             <Link href="/categories">Category</Link>
             <Link href="/userProfile">{session.user?.name}</Link>
             <button
@@ -53,7 +54,7 @@ export default function Navbar() {
         )}
       </div>
 
-      {loading && <Preloader />} {}
+      {loading && <Preloader />} { }
     </nav>
   );
 }

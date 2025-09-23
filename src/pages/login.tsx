@@ -71,7 +71,7 @@ export default function LoginForm() {
                         />
                     </div>
                     <button type="submit">Login</button>
-                    <span>Don't have an account? <Link href='/signUp'>Sign Up</Link></span>
+                    <span>Don&apos;t have an account? <Link href='/signUp'>Sign Up</Link></span>
                 </form>
             </div>
 

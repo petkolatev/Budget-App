@@ -1,4 +1,4 @@
-import {useFilePicker} from 'use-file-picker'
+import { useFilePicker } from 'use-file-picker'
 import styles from '../styles/Budget.module.css'
 import { parse, getCategoryTransactions, getCategoryAmount } from '../lib/BudgetParser';
 import { Key, useEffect, useState } from 'react';
@@ -7,10 +7,12 @@ import { OverallSpending } from './OverallSpending';
 import { TransactionTable } from './TransactionTable';
 import { Transaction } from '@/types/types';
 import { useDataContext } from '@/context/CategoryContext';
+import { useBudget } from '@/context/BudgetContext';
 
 export function Budget() {
     const { categories } = useDataContext()
     const [state, setState] = useState<Transaction[]>([])
+    const { budget, setBudget } = useBudget()
     const [openFileSelector, { filesContent }] = useFilePicker({
         readAs: "Text",
         accept: [".txt"]
@@ -21,11 +23,20 @@ export function Budget() {
 
     useEffect(() => {
         if (filesContent[0]?.content) {
-            const budget = parse(filesContent[0].content, categories);
+            const newbudget: Transaction[] = parse(filesContent[0].content, categories);
+            setBudget(newbudget)
+            setState(newbudget)
+
+        }
+
+    }, [filesContent, categories, setBudget])
+
+    useEffect(() => {
+        if (budget.length > 0) {
             setState(budget)
         }
 
-    }, [filesContent, categories])
+    }, [budget]);
 
     return (
         <div>
