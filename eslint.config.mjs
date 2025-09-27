@@ -6,18 +6,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+    baseDirectory: __dirname,
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+    ...compat.extends("next/core-web-vitals", "next/typescript"),
 
-  {
-    rules: {
-      "no-var": "off",
-      "prefer-const": "off",
+    {
+        rules: {
+            "no-var": "off",
+            "prefer-const": "off",
+        },
     },
-  },
 ];
 
 export default eslintConfig;

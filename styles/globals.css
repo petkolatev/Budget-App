@@ -1,0 +1,165 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f2f6fc;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+        monospace;
+}
+
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-float infinite 3s ease-in-out;
+    }
+}
+
+.App-header {
+    min-height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.App-link {
+    color: rgb(112, 76, 182);
+}
+
+@keyframes App-logo-float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+h2 {
+    color: #003781;
+}
+
+.button {
+    background: #003781 repeat-x scroll 0 0;
+    color: #eee;
+    border: 1px solid #003781;
+    cursor: pointer;
+    font-size: 13px;
+    height: 24px;
+    padding: 0 10px;
+    width: 150px;
+}
+
+.field-quarter {
+    float: left;
+}
+
+.field-quarter-right {
+    float: left;
+    margin-left: 10px;
+}
+
+button {
+    background: #11316b repeat-x scroll 0 0;
+    border: 1px solid #003781;
+    cursor: pointer;
+    font-size: 13px;
+    height: 24px;
+    color: #eee;
+    padding: 0 10px;
+    width: 150px;
+}
+
+button:hover,
+button:focus {
+    border: 2px solid #0e5dc4;
+}
+
+button:active {
+    background-color: #0e5dc4;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5em;
+    background-color: #f2f6fc;
+}
+
+.navbar .icon {
+    display: flex;
+    align-content: center;
+    justify-items: center;
+    padding: 8px;
+    gap: 1em;
+
+}
+
+.navbar b {
+    font-size: 2.5em;
+    position: relative;
+    bottom: 6px;
+    color: #58585c;
+}
+
+
+.buttons {
+    display: flex;
+    gap: 1rem;
+    padding: 8px;
+}
+
+.buttons div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    width: 8rem;
+    height: 2rem;
+    font-size: 22px;
+    padding: 0.3em 0.5em;
+}
+
+
+
+.buttons a,
+.buttons button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fffdfd;
+    color: black;
+    width: 8rem;
+    height: 2rem;
+    font-size: 22px;
+    padding: 0.3em 0.5em;
+    border-radius: 5px;
+    text-decoration: none;
+
+
+}
+
+.buttons button {
+    width: 8rem;
+    height: 2.8rem;
+    border: none;
+}
