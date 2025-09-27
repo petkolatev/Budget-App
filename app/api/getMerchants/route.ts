@@ -26,13 +26,13 @@ export async function GET() {
       const catMerchants = merchantMap.get(cat._id.toString()) || [];
       return {
         name: cat.name,
+        categoryId: cat._id,
         merchants: catMerchants.map((m) => ({
           name: m.name,
           description: m.description || "",
         })),
       };
     });
-
     return NextResponse.json({ categories: formatted }, { status: 200 });
   } catch (err) {
     console.error("API error:", err);

@@ -15,7 +15,7 @@ export const handleCategorySubmit = async (
   setLoading(true);
 
   try {
-    const res = await fetch("/api/createCategories", {
+    const res = await fetch("/api/category", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name }),

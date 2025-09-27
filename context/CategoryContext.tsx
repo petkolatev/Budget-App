@@ -1,5 +1,6 @@
 "use client";
 
+import { ObjectId } from "mongodb";
 import {
   createContext,
   ReactNode,
@@ -33,9 +34,13 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
       const response = await fetch("/api/getMerchants");
       const data = await response.json();
       const formattedCategories = data.categories.map(
-        (cat: { name: string; merchants: { name: string }[] }) => {
+        (cat: {
+          name: string;
+          categoryId: ObjectId;
+          merchants: { name: string }[];
+        }) => {
           const merchantNames = cat.merchants.map((m) => m.name);
-          return [cat.name, ...merchantNames];
+          return [cat.name, cat.categoryId, ...merchantNames];
         },
       );
       setCategories(formattedCategories);

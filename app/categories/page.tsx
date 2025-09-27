@@ -63,16 +63,18 @@ export default function CreateCategoryPage() {
     }
   };
 
-  const handleDeleteCategory = async (categoryName: string) => {
+  const handleDeleteCategory = async (
+    categoryName: string,
+    categoryId: string,
+  ) => {
     showConfirmation(
       `Сигурен ли си, че искаш да изтриеш ${categoryName}?`,
       async () => {
         setLoading(true);
         try {
-          const res = await fetch("/api/deleteCategory", {
+          const res = await fetch(`/api/category/${categoryId}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ categoryName }),
           });
 
           const data = await res.json();
@@ -184,13 +186,17 @@ export default function CreateCategoryPage() {
         <h1>Категории и търговци</h1>
         <div className={styles.deleteCategory}>
           {categories.map((group) => {
-            const [categoryName, ...merchants] = group;
+            const [categoryName, categoryId, ...merchants] = group;
 
             return (
-              <div key={categoryName} className={styles.categoryName}>
+              <div key={categoryId} className={styles.categoryName}>
                 <h2>
                   {categoryName}
-                  <button onClick={() => handleDeleteCategory(categoryName)}>
+                  <button
+                    onClick={() =>
+                      handleDeleteCategory(categoryName, categoryId)
+                    }
+                  >
                     X
                   </button>
                 </h2>
