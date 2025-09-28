@@ -1,6 +1,5 @@
 "use client";
 
-import { ObjectId } from "mongodb";
 import {
   createContext,
   ReactNode,
@@ -13,8 +12,19 @@ type CategoryProviderProps = {
   children: ReactNode;
 };
 
+type Merchant = {
+  id: string;
+  name: string;
+};
+
+type Category = {
+  id: string;
+  name: string;
+  merchants: Merchant[];
+};
+
 type CategoryContextType = {
-  categories: string[][];
+  categories: Category[];
   error: string | null;
   reloadCategories: () => void;
 };
@@ -27,29 +37,32 @@ const CategoryContext = createContext<CategoryContextType>({
 
 export const CategoryProvider = ({ children }: CategoryProviderProps) => {
   const [error, setError] = useState<string | null>(null);
-  const [categories, setCategories] = useState<string[][]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const fetchData = async () => {
     try {
-      const response = await fetch("/api/getMerchants");
+      const response = await fetch("/api/merchant");
       const data = await response.json();
-      const formattedCategories = data.categories.map(
+
+      const formattedCategories: Category[] = data.categories.map(
         (cat: {
           name: string;
-          categoryId: ObjectId;
-          merchants: { name: string }[];
-        }) => {
-          const merchantNames = cat.merchants.map((m) => m.name);
-          return [cat.name, cat.categoryId, ...merchantNames];
-        },
+          categoryId: string;
+          merchants: { name: string; merchantId: string }[];
+        }) => ({
+          name: cat.name,
+          id: cat.categoryId,
+          merchants: cat.merchants.map((m) => ({
+            name: m.name,
+            id: m.merchantId,
+          })),
+        }),
       );
+
       setCategories(formattedCategories);
     } catch (error: unknown) {
-      let errorMessage = "Server error";
-
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
+      const errorMessage =
+        error instanceof Error ? error.message : "Server error";
       setError(errorMessage);
     }
   };

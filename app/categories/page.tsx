@@ -39,7 +39,7 @@ export default function CreateCategoryPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch("/api/createMerchants", {
+      const res = await fetch("/api/merchant", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, merchantName, description }),
@@ -94,16 +94,19 @@ export default function CreateCategoryPage() {
     );
   };
 
-  const deleteAllMerchantsFromCategory = (categoryName: string) => {
+  const deleteAllMerchantsFromCategory = (
+    categoryName: string,
+    categoryId: string,
+  ) => {
     showConfirmation(
       `Сигурен ли си, че искаш да изтриеш всички търговци от ${categoryName}?`,
       async () => {
         setLoading(true);
         try {
-          const res = await fetch("/api/deleteAllMerchantsFromCategory", {
-            method: "DELETE",
+          const res = await fetch("/api/merchant", {
+            method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ categoryName }),
+            body: JSON.stringify({ categoryId }),
           });
 
           const data = await res.json();
@@ -125,13 +128,14 @@ export default function CreateCategoryPage() {
     );
   };
 
-  const handleDeleteMerchant = (merchantName: string) => {
+  const handleDeleteMerchant = (merchantName: string, merchantId: string) => {
     showConfirmation(
       `Сигурен ли си, че искаш да изтриеш ${merchantName}?`,
       async () => {
         setLoading(true);
+
         try {
-          const res = await fetch("/api/deleteMerchant", {
+          const res = await fetch(`/api/merchant/${merchantId}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ merchantName }),
@@ -185,16 +189,14 @@ export default function CreateCategoryPage() {
       <div className={styles.category}>
         <h1>Категории и търговци</h1>
         <div className={styles.deleteCategory}>
-          {categories.map((group) => {
-            const [categoryName, categoryId, ...merchants] = group;
-
+          {categories.map((category) => {
             return (
-              <div key={categoryId} className={styles.categoryName}>
+              <div key={category.id} className={styles.categoryName}>
                 <h2>
-                  {categoryName}
+                  {category.name}
                   <button
                     onClick={() =>
-                      handleDeleteCategory(categoryName, categoryId)
+                      handleDeleteCategory(category.name, category.id)
                     }
                   >
                     X
@@ -202,20 +204,30 @@ export default function CreateCategoryPage() {
                 </h2>
 
                 <ul>
-                  {merchants.map((merchant) => (
-                    <li key={merchant}>
-                      <span>{merchant}</span>
-                      <button onClick={() => handleDeleteMerchant(merchant)}>
-                        X
-                      </button>
-                    </li>
-                  ))}
+                  {category.merchants.map(
+                    (merchant: { id: string; name: string }) => (
+                      <li key={merchant.id}>
+                        <span>{merchant.name}</span>
+                        <button
+                          onClick={() =>
+                            handleDeleteMerchant(merchant.name, merchant.id)
+                          }
+                        >
+                          X
+                        </button>
+                      </li>
+                    ),
+                  )}
                 </ul>
-                {merchants.length > 0 && (
+
+                {category.merchants.length > 0 && (
                   <button
                     className={styles.addMerchant}
                     onClick={() => {
-                      deleteAllMerchantsFromCategory(categoryName);
+                      deleteAllMerchantsFromCategory(
+                        category.name,
+                        category.id,
+                      );
                     }}
                   >
                     Изтрии всички
@@ -248,8 +260,8 @@ export default function CreateCategoryPage() {
             <select onChange={(e) => setName(e.target.value)} required>
               <option value="">-- Избери категория --</option>
               {categories.map((category, index) => (
-                <option key={index} value={category[0]}>
-                  {category[0]}
+                <option key={index} value={category.name}>
+                  {category.name}
                 </option>
               ))}
             </select>
