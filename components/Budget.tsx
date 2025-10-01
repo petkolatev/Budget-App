@@ -14,10 +14,12 @@ import { TransactionTable } from "./TransactionTable";
 import { Transaction } from "../models/types";
 import { useDataContext } from "../context/CategoryContext";
 import { useBudget } from "../context/BudgetContext";
-
+import { hexColors } from "./PieChart";
+let categoryMatrix: string[][];
 export function Budget() {
   const { categories } = useDataContext();
   const [state, setState] = useState<Transaction[]>([]);
+  const [colors, setColors] = useState<string[]>([]);
   const { budget, setBudget } = useBudget();
   const [openFileSelector, { filesContent }] = useFilePicker({
     readAs: "Text",
@@ -29,20 +31,30 @@ export function Budget() {
 
   useEffect(() => {
     if (filesContent[0]?.content) {
+      categoryMatrix = categories.map((cat) => [
+        cat.name,
+        ...cat.merchants.map((m) => m.name),
+      ]);
+
       const newbudget: Transaction[] = parse(
         filesContent[0].content,
-        categories,
+        categoryMatrix,
       );
       setBudget(newbudget);
       setState(newbudget);
+      setColors(hexColors);
     }
-  }, [filesContent, categories, setBudget]);
+  }, [filesContent, categories, colors, setBudget]);
 
   useEffect(() => {
     if (budget.length > 0) {
+      categoryMatrix = categories.map((cat) => [
+        cat.name,
+        ...cat.merchants.map((m) => m.name),
+      ]);
       setState(budget);
     }
-  }, [budget]);
+  }, [budget, categories]);
 
   return (
     <div>
@@ -63,30 +75,32 @@ export function Budget() {
           transactions={state}
           spend={spend}
           received={received}
-          categories={categories}
+          categories={categoryMatrix}
         />
       )}
       {state.length !== 0 &&
-        categories!.map((category: string[], index: Key | null | undefined) => {
-          const categoryTransactions = getCategoryTransactions(
-            category[0],
-            state,
-          );
-          const categorySpend = getCategoryAmount(
-            categoryTransactions,
-            "debit",
-          );
-          return (
-            <TransactionTable
-              key={index}
-              title={category[0]}
-              transactions={categoryTransactions}
-              spend={categorySpend}
-              received={getCategoryAmount(categoryTransactions, "credit")}
-              percentage={Math.round((categorySpend / spend!) * 100)}
-            />
-          );
-        })}
+        categoryMatrix!.map(
+          (category: string[], index: Key | null | undefined) => {
+            const categoryTransactions = getCategoryTransactions(
+              category[0],
+              state,
+            );
+            const categorySpend = getCategoryAmount(
+              categoryTransactions,
+              "debit",
+            );
+            return (
+              <TransactionTable
+                key={index}
+                title={category[0]}
+                transactions={categoryTransactions}
+                spend={categorySpend}
+                received={getCategoryAmount(categoryTransactions, "credit")}
+                percentage={Math.round((categorySpend / spend!) * 100)}
+              />
+            );
+          },
+        )}
     </div>
   );
 }
