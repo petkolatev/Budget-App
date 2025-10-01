@@ -16,6 +16,7 @@ const eslintConfig = [
         rules: {
             "no-var": "off",
             "prefer-const": "off",
+               "@typescript-eslint/no-explicit-any": "warn",
         },
     },
 ];
