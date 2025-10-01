@@ -7,22 +7,22 @@ import { useEffect } from "react";
 import Dashboard from "@/components/Dashboard";
 
 export default function HomePage() {
-  const { data: session, status } = useSession();
-  const { error } = useDataContext();
-  const { showToast } = useToast();
+    const { data: session, status } = useSession();
+    const { error } = useDataContext();
+    const { showToast } = useToast();
 
-  useEffect(() => {
-    if (error) {
-      showToast(error, "error");
-    }
-  }, [error, showToast]);
+    useEffect(() => {
+        if (error) {
+            showToast(error, "error");
+        }
+    }, [error, showToast]);
 
-  if (status === "loading") return null;
-  if (!session) return null;
+    if (status === "loading") return null;
+    if (!session) return null;
 
-  return (
-    <div className="App">
-      <Dashboard />
-    </div>
-  );
+    return (
+        <div className="App">
+            <Dashboard />
+        </div>
+    );
 }

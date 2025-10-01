@@ -4,30 +4,30 @@ import React, { createContext, ReactNode, useContext, useState } from "react";
 import { Transaction } from "../models/types";
 
 type BudgetProviderProps = {
-  children: ReactNode;
+    children: ReactNode;
 };
 
 type BudgetContextType = {
-  budget: Transaction[];
-  setBudget: (budget: Transaction[]) => void;
+    budget: Transaction[];
+    setBudget: (budget: Transaction[]) => void;
 };
 
 const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
 
 export const BudgetProvider = ({ children }: BudgetProviderProps) => {
-  const [budget, setBudget] = useState<Transaction[]>([]);
+    const [budget, setBudget] = useState<Transaction[]>([]);
 
-  return (
-    <BudgetContext.Provider value={{ budget, setBudget }}>
-      {children}
-    </BudgetContext.Provider>
-  );
+    return (
+        <BudgetContext.Provider value={{ budget, setBudget }}>
+            {children}
+        </BudgetContext.Provider>
+    );
 };
 
 export const useBudget = () => {
-  const context = useContext(BudgetContext);
-  if (!context) {
-    throw new Error("useBudget must be used within a BudgetProvider");
-  }
-  return context;
+    const context = useContext(BudgetContext);
+    if (!context) {
+        throw new Error("useBudget must be used within a BudgetProvider");
+    }
+    return context;
 };

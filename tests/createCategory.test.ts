@@ -25,7 +25,10 @@ describe("useCreateCategory", () => {
       )
     );
 
-    expect(mockToast).toHaveBeenCalledWith("Категорията е създадена", "success");
+    expect(mockToast).toHaveBeenCalledWith(
+      "Категорията е създадена",
+      "success"
+    );
     expect(mockReload).toHaveBeenCalled();
     expect(mockClose).toHaveBeenCalled();
   });

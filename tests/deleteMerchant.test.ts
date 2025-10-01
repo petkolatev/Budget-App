@@ -2,60 +2,60 @@ import { renderHook, act } from "@testing-library/react";
 import { useDeleteMerchant } from "../app/hooks/useDeleteMerchant";
 
 describe("useDeleteMerchant", () => {
-  const mockReloadCategories = jest.fn();
-  const mockShowToast = jest.fn();
+    const mockReloadCategories = jest.fn();
+    const mockShowToast = jest.fn();
 
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("успешно изтрива търговец", async () => {
-    global.fetch = jest.fn().mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ success: true, message: "Merchant deleted" }),
+    beforeEach(() => {
+        jest.clearAllMocks();
     });
 
-    const { result } = renderHook(() =>
-      useDeleteMerchant(mockReloadCategories, mockShowToast)
-    );
+    it("успешно изтрива търговец", async () => {
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({ success: true, message: "Merchant deleted" }),
+        });
 
-    await act(() =>
-      result.current.deleteMerchant("123", "Test Merchant")
-    );
+        const { result } = renderHook(() =>
+            useDeleteMerchant(mockReloadCategories, mockShowToast)
+        );
 
-    expect(global.fetch).toHaveBeenCalledWith("/api/merchant/123", expect.any(Object));
-    expect(mockShowToast).toHaveBeenCalledWith("Merchant deleted", "success");
-    expect(mockReloadCategories).toHaveBeenCalled();
-  });
+        await act(() =>
+            result.current.deleteMerchant("123", "Test Merchant")
+        );
 
-  it("показва грешка при неуспешен отговор", async () => {
-    global.fetch = jest.fn().mockResolvedValueOnce({
-      ok: false,
-      json: async () => ({ error: "Not found" }),
+        expect(global.fetch).toHaveBeenCalledWith("/api/merchant/123", expect.any(Object));
+        expect(mockShowToast).toHaveBeenCalledWith("Merchant deleted", "success");
+        expect(mockReloadCategories).toHaveBeenCalled();
     });
 
-    const { result } = renderHook(() =>
-      useDeleteMerchant(mockReloadCategories, mockShowToast)
-    );
+    it("показва грешка при неуспешен отговор", async () => {
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            ok: false,
+            json: async () => ({ error: "Not found" }),
+        });
 
-    await act(() =>
-      result.current.deleteMerchant("123", "Test Merchant")
-    );
+        const { result } = renderHook(() =>
+            useDeleteMerchant(mockReloadCategories, mockShowToast)
+        );
 
-    expect(mockShowToast).toHaveBeenCalledWith("Error: Not found", "error");
-  });
+        await act(() =>
+            result.current.deleteMerchant("123", "Test Merchant")
+        );
 
-  it("показва грешка при мрежова грешка", async () => {
-    global.fetch = jest.fn().mockRejectedValueOnce("Network error");
+        expect(mockShowToast).toHaveBeenCalledWith("Error: Not found", "error");
+    });
 
-    const { result } = renderHook(() =>
-      useDeleteMerchant(mockReloadCategories, mockShowToast)
-    );
+    it("показва грешка при мрежова грешка", async () => {
+        global.fetch = jest.fn().mockRejectedValueOnce("Network error");
 
-    await act(() =>
-      result.current.deleteMerchant("123", "Test Merchant")
-    );
+        const { result } = renderHook(() =>
+            useDeleteMerchant(mockReloadCategories, mockShowToast)
+        );
 
-    expect(mockShowToast).toHaveBeenCalledWith("Error: Network error", "error");
-  });
+        await act(() =>
+            result.current.deleteMerchant("123", "Test Merchant")
+        );
+
+        expect(mockShowToast).toHaveBeenCalledWith("Error: Network error", "error");
+    });
 });
