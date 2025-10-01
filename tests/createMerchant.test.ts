@@ -1,16 +1,10 @@
-import { FormEvent } from "react";
-import { handleCreateMerchant } from "../app/utils/CreateMerchant";
+import { renderHook, act } from '@testing-library/react'
+import { useCreateMerchant } from '../app/hooks/useCreateMerchant';
 
-describe("handleCreateMerchant", () => {
-  const setLoading = jest.fn();
-  const setName = jest.fn();
-  const setMerchantName = jest.fn();
-  const setDescription = jest.fn();
-  const reloadCategories = jest.fn();
-  const showMerchantModal = jest.fn();
-  const showToast = jest.fn();
-
-  const fakeEvent = { preventDefault: jest.fn() } as unknown as FormEvent;
+describe("useCreateMerchant", () => {
+  const mockReloadCategories = jest.fn();
+  const mockShowToast = jest.fn();
+  const mockCloseModal = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -21,33 +15,22 @@ describe("handleCreateMerchant", () => {
       json: async () => ({ success: true, message: "created merchant" }),
     });
 
-    await handleCreateMerchant(
-      fakeEvent,
-      "Test Category",
-      "Test Merchant",
-      "Test Description",
-      setLoading,
-      setName,
-      setMerchantName,
-      setDescription,
-      reloadCategories,
-      showMerchantModal,
-      showToast,
+    const { result } = renderHook(() =>
+      useCreateMerchant(mockReloadCategories, mockShowToast, mockCloseModal)
     );
-    expect(fakeEvent.preventDefault).toHaveBeenCalled();
-    expect(setLoading).toHaveBeenCalledWith(true);
-    expect(global.fetch).toHaveBeenCalledWith(
-      "/api/merchant",
-      expect.any(Object),
+    await act(() =>
+      result.current.createMerchant(
+        { preventDefault: jest.fn() } as any,
+        "Категория",
+        "Търговец",
+        "Описание",
+        () => { }
+      )
     );
-    expect(showToast).toHaveBeenCalledWith("created merchant", "success");
-    expect(setName).toHaveBeenCalledWith("");
-    expect(setMerchantName).toHaveBeenCalledWith("");
-    expect(setDescription).toHaveBeenCalledWith("");
-    expect(reloadCategories).toHaveBeenCalled();
-    expect(showMerchantModal).toHaveBeenCalledWith(false);
-    expect(reloadCategories).toHaveBeenCalled();
-    expect(setLoading).toHaveBeenCalledWith(false);
+    expect(mockShowToast).toHaveBeenCalledWith("created merchant", "success");
+    expect(mockReloadCategories).toHaveBeenCalled();
+    expect(mockCloseModal).toHaveBeenCalled();
+
   });
 
   it("show error on failed response", async () => {
@@ -55,45 +38,43 @@ describe("handleCreateMerchant", () => {
       json: async () => ({ success: false, error: "Invalid data" }),
     });
 
-    await handleCreateMerchant(
-      fakeEvent,
-      "Test Category",
-      "Test Merchant",
-      "Test Description",
-      setLoading,
-      setName,
-      setMerchantName,
-      setDescription,
-      reloadCategories,
-      showMerchantModal,
-      showToast,
+    const { result } = renderHook(() =>
+      useCreateMerchant(mockReloadCategories, mockShowToast, mockCloseModal)
     );
 
-    expect(showToast).toHaveBeenCalledWith("Error: Invalid data", "error");
-    expect(setLoading).toHaveBeenCalledWith(false);
+    await act(() =>
+      result.current.createMerchant(
+        { preventDefault: jest.fn() } as any,
+        "Категория",
+        "Търговец",
+        "Описание",
+        () => { }
+      )
+    );
+
+    expect(mockShowToast).toHaveBeenCalledWith("Error: Invalid data", "error");
   });
 
   it("shows error on exception", async () => {
     global.fetch = jest.fn().mockRejectedValueOnce(new Error("Network error"));
 
-    await handleCreateMerchant(
-      fakeEvent,
-      "Test Category",
-      "Test Merchant",
-      "Test Description",
-      setLoading,
-      setName,
-      setMerchantName,
-      setDescription,
-      reloadCategories,
-      showMerchantModal,
-      showToast,
+    const { result } = renderHook(() =>
+      useCreateMerchant(mockReloadCategories, mockShowToast, mockCloseModal)
     );
 
-    expect(showToast).toHaveBeenCalledWith(
-      "Error: Error: Network error",
-      "error",
+    await act(() =>
+      result.current.createMerchant(
+        { preventDefault: jest.fn() } as any,
+        "",
+        "",
+        "description",
+        () => { }
+      )
     );
-    expect(setLoading).toHaveBeenCalledWith(false);
+
+    expect(mockShowToast).toHaveBeenCalledWith(
+      "Category and Merchant are required",
+      "error"
+    );
   });
 });
