@@ -1,6 +1,5 @@
-// utils/handleCategorySubmit.test.ts
 import { FormEvent } from "react";
-import { handleCategorySubmit } from "../utils/handleCategorySubmit";
+import { handleCategorySubmit } from "../app/utils/handleCategorySubmit";
 
 describe("handleCategorySubmit", () => {
   const setLoading = jest.fn();
@@ -9,16 +8,16 @@ describe("handleCategorySubmit", () => {
   const setShowCategoryModal = jest.fn();
   const showToast = jest.fn();
 
+  const fakeEvent = { preventDefault: jest.fn() } as unknown as FormEvent;
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it("успешно създава категория", async () => {
+  it("successfully created category", async () => {
     global.fetch = jest.fn().mockResolvedValueOnce({
-      json: async () => ({ success: true, message: "Категорията е създадена" }),
+      json: async () => ({ success: true, message: "created category" }),
     });
-
-    const fakeEvent = { preventDefault: jest.fn() } as unknown as FormEvent;
 
     await handleCategorySubmit(
       fakeEvent,
@@ -32,22 +31,21 @@ describe("handleCategorySubmit", () => {
 
     expect(fakeEvent.preventDefault).toHaveBeenCalled();
     expect(setLoading).toHaveBeenCalledWith(true);
-    expect(showToast).toHaveBeenCalledWith(
-      "Категорията е създадена",
-      "success",
+    expect(global.fetch).toHaveBeenCalledWith(
+      "/api/category",
+      expect.any(Object),
     );
+    expect(showToast).toHaveBeenCalledWith("created category", "success");
     expect(setName).toHaveBeenCalledWith("");
     expect(reloadCategories).toHaveBeenCalled();
     expect(setShowCategoryModal).toHaveBeenCalledWith(false);
     expect(setLoading).toHaveBeenCalledWith(false);
   });
 
-  it("показва грешка при неуспешен отговор", async () => {
+  it("shows error on failed response", async () => {
     global.fetch = jest.fn().mockResolvedValueOnce({
-      json: async () => ({ success: false, error: "Невалидно име" }),
+      json: async () => ({ success: false, error: "Invalid name" }),
     });
-
-    const fakeEvent = { preventDefault: jest.fn() } as unknown as FormEvent;
 
     await handleCategorySubmit(
       fakeEvent,
@@ -59,14 +57,12 @@ describe("handleCategorySubmit", () => {
       showToast,
     );
 
-    expect(showToast).toHaveBeenCalledWith("Error: Невалидно име", "error");
+    expect(showToast).toHaveBeenCalledWith("Error: Invalid name", "error");
     expect(setLoading).toHaveBeenCalledWith(false);
   });
 
-  it("показва грешка при exception", async () => {
+  it("shows error on exception", async () => {
     global.fetch = jest.fn().mockRejectedValueOnce(new Error("Network error"));
-
-    const fakeEvent = { preventDefault: jest.fn() } as unknown as FormEvent;
 
     await handleCategorySubmit(
       fakeEvent,

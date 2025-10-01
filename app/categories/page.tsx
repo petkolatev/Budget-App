@@ -7,6 +7,7 @@ import Modal from "../../components/Modal";
 import { useToast } from "../../context/ToastContext";
 import Preloader from "../dashboard/Preloader";
 import { handleCategorySubmit } from "../utils/handleCategorySubmit";
+import { handleCreateMerchant } from "../utils/CreateMerchant";
 
 export default function CreateCategoryPage() {
   const [showMerchantModal, setShowMerchantModal] = useState(false);
@@ -23,7 +24,7 @@ export default function CreateCategoryPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const { showToast } = useToast();
 
-  const onSubmit = async (e: FormEvent) => {
+  const createCategory = async (e: FormEvent) => {
     handleCategorySubmit(
       e,
       name,
@@ -35,32 +36,20 @@ export default function CreateCategoryPage() {
     );
   };
 
-  const handleMerchantSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await fetch("/api/merchant", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, merchantName, description }),
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        showToast(data.message, "success");
-        setName("");
-        setMerchantName("");
-        setDescription("");
-        setShowMerchantModal(false);
-        reloadCategories();
-      } else {
-        showToast(`Error: ${data.error}`, "error");
-      }
-    } catch (error) {
-      showToast(`Error: ${error}`, "error");
-    } finally {
-      setLoading(false);
-    }
+  const createMerchant = async (e: FormEvent) => {
+    handleCreateMerchant(
+      e,
+      name,
+      merchantName,
+      description,
+      setLoading,
+      setName,
+      setMerchantName,
+      setDescription,
+      reloadCategories,
+      setShowMerchantModal,
+      showToast,
+    );
   };
 
   const handleDeleteCategory = async (
@@ -243,7 +232,7 @@ export default function CreateCategoryPage() {
         isOpen={showMerchantModal}
         onClose={() => setShowMerchantModal(false)}
       >
-        <form className={styles.PopUp} onSubmit={handleMerchantSubmit}>
+        <form className={styles.PopUp} onSubmit={createMerchant}>
           <h2>Прибави търговец</h2>
           <label>
             <p> Име</p>
@@ -287,7 +276,7 @@ export default function CreateCategoryPage() {
         isOpen={showCategoryModal}
         onClose={() => setShowCategoryModal(false)}
       >
-        <form onSubmit={onSubmit} className={styles.PopUp}>
+        <form onSubmit={createCategory} className={styles.PopUp}>
           <h2>Добави категория</h2>
           <label>
             <p>Име на категория:</p>
