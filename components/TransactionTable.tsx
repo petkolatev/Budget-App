@@ -45,23 +45,30 @@ export function TransactionTable(props: TransactionTableProps) {
           </tr>
         </thead>
         <tbody className={styles.tbody}>
-          {transactions.length === 0 && <div> Няма транзакции </div>}
-          {transactions?.map((transaction, index) => (
-            <tr key={index}>
-              <td>{transaction.date}</td>
-              <td className={styles.budgetTable}>
-                {transaction.type === "debit" ? transaction.amount : ""}
+          {transactions.length === 0 ? (
+            <tr>
+              <td colSpan={8} style={{ textAlign: "center" }}>
+                Няма транзакции
               </td>
-              <td className={styles.highlight}>
-                {transaction.type === "credit" ? transaction.amount : ""}
-              </td>
-              <td>{transaction.category}</td>
-              <td>{transaction.document}</td>
-              <td>{transaction.contragent}</td>
-              <td>{transaction.reason}</td>
-              <td>{transaction.info}</td>
             </tr>
-          ))}
+          ) : (
+            transactions.map((transaction, index) => (
+              <tr key={index}>
+                <td>{transaction.date}</td>
+                <td className={styles.budgetTable}>
+                  {transaction.type === "debit" ? transaction.amount : ""}
+                </td>
+                <td className={styles.highlight}>
+                  {transaction.type === "credit" ? transaction.amount : ""}
+                </td>
+                <td>{transaction.category}</td>
+                <td>{transaction.document}</td>
+                <td>{transaction.contragent}</td>
+                <td>{transaction.reason}</td>
+                <td>{transaction.info}</td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
       <div className={styles.divider}></div>
