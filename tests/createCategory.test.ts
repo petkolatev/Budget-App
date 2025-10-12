@@ -8,9 +8,9 @@ describe("useCreateCategory", () => {
 
   beforeEach(() => jest.clearAllMocks());
 
-  it("създава категория успешно", async () => {
+  it("Created category successfully", async () => {
     global.fetch = jest.fn().mockResolvedValueOnce({
-      json: async () => ({ success: true, message: "Категорията е създадена" }),
+      json: async () => ({ success: true, message: "Category created" }),
     });
 
     const { result } = renderHook(() =>
@@ -25,15 +25,12 @@ describe("useCreateCategory", () => {
       ),
     );
 
-    expect(mockToast).toHaveBeenCalledWith(
-      "Категорията е създадена",
-      "success",
-    );
+    expect(mockToast).toHaveBeenCalledWith("Category created", "success");
     expect(mockReload).toHaveBeenCalled();
     expect(mockClose).toHaveBeenCalled();
   });
 
-  it("показва грешка при празно име", async () => {
+  it("shows error on empty name", async () => {
     const { result } = renderHook(() =>
       useCreateCategory(mockReload, mockToast, mockClose),
     );
