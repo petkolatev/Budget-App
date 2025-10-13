@@ -6,7 +6,10 @@ import { useState, FormEvent } from "react";
 import Modal from "../../components/Modal";
 import { useToast } from "../../context/ToastContext";
 import Preloader from "../dashboard/Preloader";
-import { handleCategorySubmit } from "../utils/handleCategorySubmit";
+import { useCreateMerchant } from "../hooks/useCreateMerchant";
+import { useDeleteMerchant } from "../hooks/useDeleteMerchant";
+import { useCreateCategory } from "../hooks/useCreateCategory";
+import { useDeleteCategory } from "../hooks/useDeleteCategory";
 
 export default function CreateCategoryPage() {
   const [showMerchantModal, setShowMerchantModal] = useState(false);
@@ -20,76 +23,46 @@ export default function CreateCategoryPage() {
   const [merchantName, setMerchantName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const { categories, reloadCategories } = useDataContext();
-  const [loading, setLoading] = useState<boolean>(false);
   const { showToast } = useToast();
 
-  const onSubmit = async (e: FormEvent) => {
-    handleCategorySubmit(
-      e,
-      name,
-      setLoading,
-      setName,
-      reloadCategories,
-      setShowCategoryModal,
-      showToast,
-    );
+  const { createMerchant, loading: merchantLoading } = useCreateMerchant(
+    reloadCategories,
+    showToast,
+    () => setShowMerchantModal(false),
+  );
+  const { deleteMerchant, loading: deleteMerchantLoading } = useDeleteMerchant(
+    reloadCategories,
+    showToast,
+  );
+  const { createCategory, loading: categoryLoading } = useCreateCategory(
+    reloadCategories,
+    showToast,
+    () => setShowCategoryModal(false),
+  );
+
+  const { deleteCategory, loading: deleteLoading } = useDeleteCategory(
+    reloadCategories,
+    showToast,
+  );
+
+  const handleCreateCategory = (e: FormEvent) => {
+    createCategory(e, name, () => setName(""));
   };
 
-  const handleMerchantSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await fetch("/api/merchant", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, merchantName, description }),
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        showToast(data.message, "success");
-        setName("");
-        setMerchantName("");
-        setDescription("");
-        setShowMerchantModal(false);
-        reloadCategories();
-      } else {
-        showToast(`Error: ${data.error}`, "error");
-      }
-    } catch (error) {
-      showToast(`Error: ${error}`, "error");
-    } finally {
-      setLoading(false);
-    }
+  const handleMerchantSubmit = (e: FormEvent) => {
+    createMerchant(e, name, merchantName, description, () => {
+      setName("");
+      setMerchantName("");
+      setDescription("");
+    });
   };
 
-  const handleDeleteCategory = async (
-    categoryName: string,
-    categoryId: string,
-  ) => {
+  const handleDeleteCategory = (categoryName: string, categoryId: string) => {
     showConfirmation(
       `Сигурен ли си, че искаш да изтриеш ${categoryName}?`,
       async () => {
-        setLoading(true);
-        try {
-          const res = await fetch(`/api/category/${categoryId}`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-          });
-
-          const data = await res.json();
-          if (res.ok) {
-            showToast(data.message, "success");
-            reloadCategories();
-          } else {
-            showToast(`Error: ${data.error}`, "error");
-          }
-          setConfirmModal(null);
-        } catch (error) {
-          showToast(`Error: ${error}`, "error");
-        } finally {
-          setLoading(false);
-        }
+        await deleteCategory(categoryId);
+        setConfirmModal(null);
       },
     );
   };
@@ -101,7 +74,6 @@ export default function CreateCategoryPage() {
     showConfirmation(
       `Сигурен ли си, че искаш да изтриеш всички търговци от ${categoryName}?`,
       async () => {
-        setLoading(true);
         try {
           const res = await fetch("/api/merchant", {
             method: "PUT",
@@ -122,7 +94,6 @@ export default function CreateCategoryPage() {
         } catch (error) {
           showToast(`Error: ${error}`, "error");
         } finally {
-          setLoading(false);
         }
       },
     );
@@ -132,30 +103,8 @@ export default function CreateCategoryPage() {
     showConfirmation(
       `Сигурен ли си, че искаш да изтриеш ${merchantName}?`,
       async () => {
-        setLoading(true);
-
-        try {
-          const res = await fetch(`/api/merchant/${merchantId}`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ merchantName }),
-          });
-
-          const data = await res.json();
-
-          if (res.status === 200) {
-            showToast(data.message, "success");
-            reloadCategories();
-          } else {
-            showToast(`Error: ${data.error}`, "error");
-          }
-
-          setConfirmModal(null);
-        } catch (error) {
-          showToast(`Error: ${error}`, "error");
-        } finally {
-          setLoading(false);
-        }
+        await deleteMerchant(merchantId, merchantName);
+        setConfirmModal(null);
       },
     );
   };
@@ -170,7 +119,6 @@ export default function CreateCategoryPage() {
         <button
           onClick={() => {
             setShowCategoryModal(true);
-            setName("");
           }}
         >
           Добави категория
@@ -185,7 +133,6 @@ export default function CreateCategoryPage() {
           Добави търговец
         </button>
       </div>
-
       <div className={styles.category}>
         <h1>Категории и търговци</h1>
         <div className={styles.deleteCategory}>
@@ -238,7 +185,6 @@ export default function CreateCategoryPage() {
           })}
         </div>
       </div>
-
       <Modal
         isOpen={showMerchantModal}
         onClose={() => setShowMerchantModal(false)}
@@ -282,12 +228,11 @@ export default function CreateCategoryPage() {
           </div>
         </form>
       </Modal>
-
       <Modal
         isOpen={showCategoryModal}
         onClose={() => setShowCategoryModal(false)}
       >
-        <form onSubmit={onSubmit} className={styles.PopUp}>
+        <form onSubmit={handleCreateCategory} className={styles.PopUp}>
           <h2>Добави категория</h2>
           <label>
             <p>Име на категория:</p>
@@ -312,9 +257,11 @@ export default function CreateCategoryPage() {
           </div>
         </form>
       </Modal>
-
-      {loading && <Preloader />}
-
+      loading: deleteLoading,
+      {merchantLoading ||
+        deleteMerchantLoading ||
+        categoryLoading ||
+        (deleteLoading && <Preloader />)}
       {confirmModal?.open && (
         <Modal isOpen={true} onClose={() => setConfirmModal(null)}>
           <div className={styles.confirmation}>

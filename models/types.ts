@@ -1,31 +1,31 @@
 export interface Transaction {
-  date: string;
-  amount: number;
-  type: "debit" | "credit";
-  document: string;
-  contragent: string;
-  reason: string;
-  info: string;
-  category: string;
+    date: string;
+    amount: number;
+    type: "debit" | "credit";
+    document: string;
+    contragent: string;
+    reason: string;
+    info: string;
+    category: string;
 }
 
 export interface TransactionTableProps {
-  transactions: Transaction[];
-  spend: number;
-  received: number;
-  percentage: number;
-  title: string;
+    transactions: Transaction[];
+    spend: number;
+    received: number;
+    percentage: number;
+    title: string;
 }
 
 export interface OverallSpendingType {
-  transactions: Transaction[] | undefined;
-  spend: number | undefined;
-  received: number | undefined;
-  categories: string[][];
+    transactions: Transaction[] | undefined;
+    spend: number | undefined;
+    received: number | undefined;
+    categories: string[][];
 }
 
 export interface BudgetState {
-  value: number;
-  transactions?: Transaction[];
-  status: "idle" | "loading" | "failed";
+    value: number;
+    transactions?: Transaction[];
+    status: "idle" | "loading" | "failed";
 }

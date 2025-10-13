@@ -14,6 +14,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { useBudget } from "../context/BudgetContext";
 import dynamic from "next/dynamic";
+let categoryMatrix: string[][];
+
 const RenderPieChart = dynamic(
   () => import("./PieChart").then((mod) => mod.RenderPieChart),
   {
@@ -81,9 +83,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (filesContent[0]?.content) {
+      categoryMatrix = categories.map((cat) => [
+        cat.name,
+        ...cat.merchants.map((m) => m.name),
+      ]);
+
       const newbudget: Transaction[] = parse(
         filesContent[0].content,
-        categories,
+        categoryMatrix,
       );
       setBudget(newbudget);
       setState(newbudget);
@@ -93,10 +100,15 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (budget.length > 0) {
+      categoryMatrix = categories.map((cat) => [
+        cat.name,
+        ...cat.merchants.map((m) => m.name),
+      ]);
+
       setState(budget);
       setColors(hexColors);
     }
-  }, [budget]);
+  }, [budget, categories]);
 
   return (
     <div>
@@ -107,7 +119,7 @@ export default function Dashboard() {
               transactions={state}
               spend={spend}
               received={received}
-              categories={categories}
+              categories={categoryMatrix}
             />
           )}
         </div>
@@ -136,14 +148,14 @@ export default function Dashboard() {
                 </button>
               </div>
               {categories.map((group, index) => {
-                const [categoryName, ...merchants] = group;
+                const { name: categoryName, merchants } = group;
 
                 return (
-                  <div key={categoryName} className={styles.category}>
+                  <div key={group.id} className={styles.category}>
                     <h2>{categoryName}</h2>
                     <ul className={styles.merchantGroup}>
                       {merchants.map((merchant) => (
-                        <span key={merchant}>
+                        <span key={merchant.id}>
                           <span
                             style={{
                               backgroundColor: rbgaColors[index],
@@ -151,7 +163,7 @@ export default function Dashboard() {
                             }}
                             className={styles.merchants}
                           >
-                            {merchant}
+                            {merchant.name}
                           </span>
                         </span>
                       ))}
@@ -198,7 +210,7 @@ export default function Dashboard() {
             <p>Категория</p>
             <select onChange={(e) => setName(e.target.value)} required>
               <option value="">-- Избери категория --</option>
-              {categories.map((category, index) => (
+              {categoryMatrix?.map((category, index) => (
                 <option key={index} value={category[0]}>
                   {category[0]}
                 </option>

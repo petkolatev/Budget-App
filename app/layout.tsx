@@ -12,25 +12,25 @@ import { BudgetProvider } from "../context/BudgetContext";
 import Preloader from "./dashboard/Preloader";
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return (
-    <html lang="bg">
-      <body>
-        <SessionProvider>
-          <ToastProvider>
-            <CategoryProvider>
-              <BudgetProvider>
-                <Navbar />
-                <Preloader />
-                {children}
-              </BudgetProvider>
-            </CategoryProvider>
-          </ToastProvider>
-        </SessionProvider>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="bg">
+            <body>
+                <SessionProvider>
+                    <ToastProvider>
+                        <CategoryProvider>
+                            <BudgetProvider>
+                                <Navbar />
+                                <Preloader />
+                                {children}
+                            </BudgetProvider>
+                        </CategoryProvider>
+                    </ToastProvider>
+                </SessionProvider>
+            </body>
+        </html>
+    );
 }

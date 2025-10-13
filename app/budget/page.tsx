@@ -7,21 +7,21 @@ import { useEffect } from "react";
 import Budget from "@/components/Budget";
 
 export default function BudgetPage() {
-  const { data: session } = useSession();
-  const { error } = useDataContext();
-  const { showToast } = useToast();
+    const { data: session } = useSession();
+    const { error } = useDataContext();
+    const { showToast } = useToast();
 
-  useEffect(() => {
-    if (error) {
-      showToast(error, "error");
-    }
-  }, [error, showToast]);
+    useEffect(() => {
+        if (error) {
+            showToast(error, "error");
+        }
+    }, [error, showToast]);
 
-  if (!session) return null;
+    if (!session) return null;
 
-  return (
-    <div className="App">
-      <Budget />
-    </div>
-  );
+    return (
+        <div className="App">
+            <Budget />
+        </div>
+    );
 }

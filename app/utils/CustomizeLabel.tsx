@@ -1,6 +1,6 @@
-import { PieLabelProps } from "recharts/types/polar/Pie";
+import { PieLabelRenderProps } from "recharts";
 
-export const renderCustomizedLabel = (props: PieLabelProps) => {
+export const renderCustomizedLabel = (props: PieLabelRenderProps) => {
   const RADIAN = Math.PI / 180;
   const { cx, cy, midAngle, outerRadius, percent, name } = props;
 
@@ -15,20 +15,20 @@ export const renderCustomizedLabel = (props: PieLabelProps) => {
     return null;
   }
 
-  const radius = outerRadius + 30;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const radius = Number(outerRadius) + 30;
+  const x = Number(cx) + radius * Math.cos(-midAngle! * RADIAN);
+  const y = Number(cy) + radius * Math.sin(-midAngle! * RADIAN);
 
   return (
     <text
       x={x}
       y={y}
       fill="#333"
-      textAnchor={x > cx ? "start" : "end"}
+      textAnchor={Number(x) > Number(cx) ? "start" : "end"}
       dominantBaseline="central"
       fontSize={12}
     >
-      {`${name}: ${(percent * 100).toFixed(1)}%`}
+      {`${name}: ${(Number(percent) * 100).toFixed(1)}%`}
     </text>
   );
 };
