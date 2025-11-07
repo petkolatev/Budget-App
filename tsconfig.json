@@ -15,9 +15,10 @@
         "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "jsx": "preserve",
+        "jsx":"react-jsx",
         "incremental": true,
         "baseUrl": ".",
+        "types": ["jest", "@testing-library/jest-dom"],
         "paths": {
             "@/*": [
                 "./*"
@@ -33,10 +34,11 @@
         "**/*.ts",
         "**/*.tsx",
         "jest.config.js",
+        "jest.setup.ts",
         "next-env.d.ts",
         ".next/types/**/*.ts"
     ],
     "exclude": [
-     "node_modules", ".next", "cypress", "tests"
+     "node_modules", ".next", "cypress",
     ]
 }
