@@ -3,7 +3,6 @@ import LoginForm from "../app/login/page";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useToast } from "../context/ToastContext";
-import React from "react";
 
 jest.mock("next-auth/react", () => ({
   signIn: jest.fn(),
